@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.menu = "Report";
+    ViewBag.Title = "Identitas Kendaraan Bermotor";
+    ViewBag.submenu = "IKB_Report";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataIKBReport" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No. Rangka</th>
+                                <th>No. Mesin</th>
+                                <th>Return</th>
+                                <th>CO Number</th>
+                                <th>CO Line</th>
+                                <th>CO Qty</th>
+                                <th>Customer No</th>
+                                <th>Nama</th>
+                                <th>Alamat</th>
+                                <th>Atas nama</th>
+                                <th>Identity Line</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Jenis</th>
+                                <th>Bahan bakar</th>
+                                <th>Formulir A/B</th>
+                                <th>Merk</th>
+                                <th>Model</th>
+                                <th>No. KTP/TDP</th>
+                                <th>Isi Silinder</th>
+                                <th>SRUT</th>
+                                <th>SUT</th>
+                                <th>TPT</th>
+                                <th>Type</th>
+                                <th>Warna</th>
+                                <th>Harga</th>
+                                <th>No Faktur</th>
+                                <th>Tgl Faktur</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable() {
+            var dataIKBReport = $('#dataIKBReport')
+                .DataTable({
+                    "sAjaxSource": '@Url.Action("IKB_GetData", "Report")',
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "no_rangka",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "no_mesin",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                            "data": "sreturn",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value == "0") {
+                                    return "";
+                                } else {
+                                    return "Return";
+                                }
+                            }
+                        }, {
+                             "data": "co_num",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "co_line",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "co_line_qty",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "cust_num",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "name",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "alamat",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "atas_nama",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "identity_line",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "item",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "description",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "jenis",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "bahan_bakar",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "formulir_AB",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "merk",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "model",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "no_ktp",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "silinder",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "srut",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "sut",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "tpt",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "type",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "warna",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                            "data": "uf_harga_revisi",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "no_faktur",
+	                        "autoWidth": true,
+	                        "searchable": true
+                        }, {
+                             "data": "tgl_faktur",
+	                        "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+
+                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                            },
+                        },
+                    ],
+
+                });
+        }
+
+        $(document).ready(function () {
+            bindDatatable();
+        });
+    </script>
+}

@@ -1,0 +1,499 @@
+﻿@model WebAppTDIPortalE_Motor.Models.IKBInputViewModel
+
+@{
+    ViewBag.menu = "IKB";
+    ViewBag.Title = "Identitas Kendaraan Bermotor";
+    ViewBag.submenu = "IKB_Edit";
+}
+
+<style>
+    /* To set specific height and width for image preview */
+    .image-container {
+        margin: 20px;
+        height: 200px;
+        width: 400px;
+        background-color: #eee;
+        border: 1px dashed #000;
+    }
+</style>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("UpdateIKB", "IKB", FormMethod.Post, new { @class = "user", @id = "frm-co", @enctype = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.no_rangka, new { @Value = Model.no_rangka })
+                    @Html.HiddenFor(m => m.no_mesin, new { @Value = Model.no_mesin })
+                    @Html.HiddenFor(m => m.cust_num, new { @Value = Model.cust_num })
+                    @Html.HiddenFor(m => m.name, new { @Value = Model.name })
+                    @Html.HiddenFor(m => m.uf_revisi, new { @Value = Model.uf_revisi })
+                    @Html.HiddenFor(m => m.no_faktur, new { @Value = Model.no_faktur })
+                    @Html.HiddenFor(m => m.co_num, new { @Value = Model.co_num })
+                    @Html.HiddenFor(m => m.co_line, new { @Value = Model.co_line })
+                    @Html.HiddenFor(m => m.Item_price, new { @Value = Model.Item_price })
+                    @Html.HiddenFor(m => m.SubsidiClaimStatus, new { @Value = Model.SubsidiClaimStatus })
+                    @Html.HiddenFor(m => m.provinsiId, new { @Value = Model.provinsiId })
+                    @Html.HiddenFor(m => m.kabupatenId, new { @Value = Model.kabupatenId })
+                    @Html.HiddenFor(m => m.kecamatanId, new { @Value = Model.kecamatanId })
+                    @Html.HiddenFor(m => m.desaId, new { @Value = Model.desaId })
+                    @Html.HiddenFor(m => m.provinsi, new { @Value = Model.provinsi })
+                    @Html.HiddenFor(m => m.kabupaten, new { @Value = Model.kabupaten })
+                    @Html.HiddenFor(m => m.kecamatan, new { @Value = Model.kecamatan })
+                    @Html.HiddenFor(m => m.desa, new { @Value = Model.desa })
+                    @Html.HiddenFor(m => m.uf_claim_cashback, new { @Value = Model.uf_claim_cashback })
+                    @Html.HiddenFor(m => m.uf_claim_sepeda, new { @Value = Model.uf_claim_sepeda })
+
+                    <div class="row">
+                        <div class="col-2">
+                            Customer :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.cust_num, new { @Value = Model.cust_num, @placeholder = "Customer Number", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.name, new { @Value = Model.name, @placeholder = "Name", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            CO Number :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.co_num, new { @Value = Model.co_num, @placeholder = "CO Number", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.co_line, new { @Value = Model.co_line, @placeholder = "CO Line", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.co_line_qty, new { @Value = Model.co_line_qty, @placeholder = "CO Qty", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            Merk :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.merk, new SelectList(Model.MerkList, "ID", "name", Model.merk), new { @Value = Model.merk, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                                @Html.ValidationMessageFor(m => m.merk, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            Jenis :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.jenis, new SelectList(Model.JenisList, "ID", "name", Model.jenis), new { @Value = Model.jenis, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-1">
+                            Type :
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.type, new SelectList(Model.TypeList, "code", "description", Model.type), new { @Value = Model.type, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @onchange = "showTypeVal()" })
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                @Html.TextBox("typeDesc", "", new { @Value = "", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            Harga :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBox("harga", "", new { @Value = "", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Model :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.model, new SelectList(Model.ModelList, "ID", "name", Model.model), new { @Value = Model.model, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            Tahun :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.tahun, new SelectList(Model.TahunList, "ID", "name", Model.tahun), new { @Value = Model.tahun, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Isi Silinder :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.silinder, new SelectList(Model.SilinderList, "ID", "name", Model.silinder), new { @Value = Model.silinder, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            Warna :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.warna, new SelectList(Model.WarnaList, "ID", "name", Model.warna), new { @Value = Model.warna, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            No. Rangka :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.no_rangka, new { @Value = Model.no_rangka, @placeholder = "No Rangka", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            No. Mesin :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.no_mesin, new { @Value = Model.no_mesin, @placeholder = "No Mesin", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Bahan bakar :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.bahan_bakar, new SelectList(Model.BahanBakarList, "ID", "name", Model.bahan_bakar), new { @Value = Model.bahan_bakar, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-4">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Atas nama :
+                        </div>
+                        <div class="col-10">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.atas_nama, new { @Value = Model.atas_nama, @placeholder = "Atas Nama", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Alamat :
+                        </div>
+                        <div class="col-10">
+                            <div class="form-group">
+                                @Html.TextAreaFor(m => m.alamat, new { @Value = Model.alamat, @placeholder = "Alamat", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                                @Html.ValidationMessageFor(m => m.alamat, "Mohon Mengisi Alamat Lengkap sesuai dengan KTP", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            No. KTP/TDP :
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.no_ktp, new { @Value = Model.no_ktp, @placeholder = "No KTP", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox small">
+                                    Subsidi Claim Status : @Html.CheckBoxFor(m => m.ClaimStatus, new { @Value = Model.ClaimStatus })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox small">
+                                    Claim Cashback : @Html.CheckBoxFor(m => m.uf_claim_cashbacks, new { @Value = Model.uf_claim_cashbacks })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox small">
+                                    Claim Sepeda : @Html.CheckBoxFor(m => m.uf_claim_sepedas, new { @Value = Model.uf_claim_sepedas })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Provinsi :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.vprovinsi, new SelectList(Model.ProvinsiList, "id", "description", Model.provinsiId), new { @Value = Model.provinsiId, @id = "vprovinsi", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            Kabupaten :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.vkabupaten, new SelectList(Model.KabupatenList, "id", "description", Model.kabupatenId), new { @Value = Model.kabupatenId, @id = "vkabupaten", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Kecamatan :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.vkecamatan, new SelectList(Model.KecamatanList, "id", "description", Model.kecamatanId), new { @Value = Model.kecamatanId, @id = "vkecamatan", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            Desa :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.vdesa, new SelectList(Model.DesaList, "id", "description", Model.desaId), new { @Value = Model.desaId, @id = "vdesa", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <img src="~/Uploads/@(Model.ImageIdentityPath)" class="image-container" />
+                        </div>
+                        <div class="col-6" style="text-align: center;">
+                            <p>Upload Lampiran foto KTP (.JPG,.JPEG,.PNG,.GIF) </p>
+                            <!-- input element to choose a file for uploading -->
+                            @Html.TextBoxFor(m => m.PostedFile, new { type = "file", @id = "PostedFile", @accept = "image/*" })
+                            <!-- img element to preview or display the uploading image -->
+                            <img class="image-container" />
+                        </div>
+                    </div>
+                    @*<div class="row">
+                <div class="col-2">
+                    PIB :
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.pib, new { @Value = Model.pib, @placeholder = "PIB", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                    </div>
+                </div>
+                <div class="col-2">
+                    TPT :
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.tpt, new SelectList(Model.TptList, "ID", "name", Model.tpt), new { @Value = Model.tpt, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    SUT :
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.sut, new SelectList(Model.SutList, "ID", "name", Model.sut), new { @Value = Model.sut, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                    </div>
+                </div>
+                <div class="col-2">
+                    SRUT :
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.srut, new SelectList(Model.SrutList, "ID", "name", Model.srut), new { @Value = Model.srut, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                    </div>
+                </div>
+            </div>*@
+                    if ((Model.no_faktur == null || Model.no_faktur == "") || ((Model.no_faktur == null || Model.no_faktur == "") && Model.uf_revisi == 1))
+                    {
+                        <div class="row">
+                            <div class="col-5">
+                                &nbsp;
+                            </div>
+                            <div class="col-2" style="text-align:center;">
+                                <input type="submit" value="Save" class="btn btn-primary btn-user btn-block" />
+                            </div>
+                            <div class="col-5">
+                                &nbsp;
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+        function showTypeVal() {
+            //alert("Selected value is " + $("#type").val() + "and Selected Text is " + $("#type option:selected").text());
+            var typeDesc = $("#type option:selected").text();
+            var myArray = typeDesc.split(" | ");
+            $("#typeDesc").val(myArray[0]);
+            $("#harga").val(myArray[1]);
+            $("#Item_price").val(myArray[1]);
+        }        
+
+        $(document).ready(function () {
+            var uf_claim_cashback = $("#uf_claim_cashback").val();
+            var uf_claim_sepeda = $("#uf_claim_sepeda").val();
+            if (uf_claim_cashback === "1") {
+                $("#uf_claim_cashbacks").prop("disabled", true);
+            } else {
+                $("#uf_claim_cashbacks").prop("disabled", false);
+            }
+            if (uf_claim_sepeda === "1") {
+                $("#uf_claim_sepedas").prop("disabled", true);
+            } else {
+                $("#uf_claim_sepedas").prop("disabled", false);
+            }
+
+            /* This function will call when onchange event fired */         
+            $("#PostedFile").on("change",function(){
+ 
+              /* Current this object refer to input element */          
+              var $input = $(this);
+              var reader = new FileReader(); 
+              reader.onload = function(){
+                    $("#image-container").attr("src", reader.result);
+              } 
+              reader.readAsDataURL($input[0].files[0]);
+            });
+
+            showTypeVal();
+            $("#vprovinsi").change(function () {
+                $.ajax({
+                    url: '@Url.Action("getKabupaten", "IKB")',
+                    type: 'post',
+                    data: {
+                        provinsiId: $("#vprovinsi").val()
+                    }
+                }).done(function (response) {
+                    $("#vkabupaten").html(response);
+                    $("#provinsiId").val($("#vprovinsi").val());
+                    $.ajax({
+                        url: '@Url.Action("getProvinsiById", "IKB")',
+                        type: 'post',
+                        data: {
+                            provinsiId: $("#vprovinsi").val()
+                        }
+                    }).done(function (response) {
+                        $("#provinsi").val(response[0].description);
+                    });
+                });
+            });
+
+            $("#vkabupaten").change(function () {
+                $.ajax({
+                    url: '@Url.Action("getKecamatan", "IKB")',
+                    type: 'post',
+                    data: {
+                        kabupatenId: $("#vkabupaten").val()
+                    }
+                }).done(function (response) {
+                    $("#vkecamatan").html(response);
+                    $("#kabupatenId").val($("#vkabupaten").val());
+                    $.ajax({
+                        url: '@Url.Action("getKabupatenById", "IKB")',
+                        type: 'post',
+                        data: {
+                            kabupatenId: $("#vkabupaten").val()
+                        }
+                    }).done(function (response) {
+                        $("#kabupaten").val(response[0].description);
+                    });
+                });
+            });
+
+            $("#vkecamatan").change(function () {
+                $.ajax({
+                    url: '@Url.Action("getDesa", "IKB")',
+                    type: 'post',
+                    data: {
+                        kecamatanId: $("#vkecamatan").val()
+                    }
+                }).done(function (response) {
+                    $("#vdesa").html(response);
+                    $("#kecamatanId").val($("#vkecamatan").val());
+                    $.ajax({
+                        url: '@Url.Action("getKecamatanById", "IKB")',
+                        type: 'post',
+                        data: {
+                            kecamatanId: $("#vkecamatan").val()
+                        }
+                    }).done(function (response) {
+                        $("#kecamatan").val(response[0].description);
+                    });
+                });
+            });
+
+            $('#vdesa').change(function () {
+                $('#desaId').val($('#vdesa').val());
+                $.ajax({
+                    url: '@Url.Action("getDesaById", "IKB")',
+                    type: 'post',
+                    data: {
+                        desaId: $("#vdesa").val()
+                    }
+                }).done(function (response) {
+                    $("#desa").val(response[0].description);
+                });
+            });
+
+            $('#ClaimStatus').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#SubsidiClaimStatus').val("Requested");
+                } else {
+                    $('#SubsidiClaimStatus').val("");
+                }
+            });
+
+            $('#uf_claim_cashbacks').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#uf_claim_cashback').val("1");
+                } else {
+                    $('#uf_claim_cashback').val("0");
+                }
+            });
+
+            $('#uf_claim_sepedas').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#uf_claim_sepeda').val("1");
+                } else {
+                    $('#uf_claim_sepeda').val("0");
+                }
+            });
+        });
+    </script>
+}

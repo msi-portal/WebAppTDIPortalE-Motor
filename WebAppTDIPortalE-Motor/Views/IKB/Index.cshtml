@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.menu = "IKB";
+    ViewBag.Title = "Pengajuan Faktur Kendaraan Bermotor";
+    ViewBag.submenu = "IKB_List";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataIKB" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Identity Line</th>
+                                <th>CO Number</th>
+                                <th>Co Line</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Qty Shipped</th>
+                                <th>Return</th>
+                                <th>No. Rangka/NIK/VIN</th>
+                                <th>No. Mesin</th>
+                                <th>Claim Status</th>
+                                <th>Merk</th>
+                                <th>No. Faktur</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable() {
+            var dataIKB = $('#dataIKB')
+                .DataTable({
+                    "sAjaxSource": '@Url.Action("GetListData", "IKB")',
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "identity_line",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "co_num",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "co_line",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "item",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "description",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "qty_shipped",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "sreturn",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value == "0") {
+                                    return "";
+                                } else {
+                                    return "Return";
+                                }
+                            }
+                        }, {
+                            "data": "no_rangka",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "no_mesin",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "SubsidiClaimStatus",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "merk",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "no_faktur",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            data: "no_rangka", render: function (data, type, row) {
+                                return '<a href="@Url.Action("EditIKB", "IKB")?no_rangka=' + row.no_rangka + '&no_mesin=' + row.no_mesin + '&identity_line=' + row.identity_line + '" class="btn btn-primary btn-user btn-block">Faktur</a>';
+                            }
+                        },
+                    ],
+
+                });
+        }
+        $(document).ready(function () {
+            bindDatatable();
+
+        });
+    </script>
+}

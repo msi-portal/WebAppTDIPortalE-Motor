@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.menu = "CF";
+    ViewBag.Title = "Feedback List";
+    ViewBag.submenu = "CF_List";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-primary" })
+                <div class="row">
+                    <div class="col-2" style="text-align:left;">
+                        <button type="button" class="btn btn-primary btn-user btn-block" id="btnAdd" data-toggle="modal" data-target="#AddModal">Add</button>
+                    </div>
+                    <div class="col-10">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>CF Number</th>
+                                <th>Item</th>
+                                <th>Picture</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="CfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form class="form-horizontal" method="POST" id="FormNew" role="form" enctype = "multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CfModalLabel">New Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="item" class="col-form-label">Item:</label>
+                                <input type="text" class="form-control" id="item" name="item">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="description" class="col-form-label">Description:</label>
+                                <input type="text" class="form-control" id="description" maxlength="255" name="description">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="pictureFile" class="col-form-label">Picture:</label>
+                                <input type="file" class="form-control" id="pictureFile" name="pictureFile">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary co-item-close" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable() {
+            datatable = $('#dataTable')
+                .DataTable({
+                    "sAjaxSource": '@Url.Action("GetData", "CustomerFeedback")',
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "order": [[1, 'asc']],
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "cf_num",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "item",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "strpicture",
+                            "autoWidth": true,
+                            "searchable": false,
+                            "render": function (aaData, type, row) {
+                                if (aaData) {
+                                    return '<img src="' + aaData + '" alt="Image" style="width:100px; height:auto;" />';
+                                } else {
+                                    return '<span>No Image</span>';
+                                }
+                            }
+                        },
+                        {
+                            "data": "description",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                    ],
+
+                });
+        }
+        $(document).ready(function () {
+            bindDatatable();
+        });
+
+        $("#FormNew").submit(function (e) {
+        e.preventDefault();
+    
+        // Get the form DOM element
+        var form = $('#FormNew')[0];
+
+        // Create a FormData object
+        var data = new FormData(form);
+
+        // Log FormData entries
+        for (var pair of data.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SaveFeedback", "CustomerFeedback")',
+            enctype: 'multipart/form-data',
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                if (response.Success) {
+                    alert("Successfully Created Feedback.");
+                    datatable.ajax.reload();
+                    $('#AddModal').modal('hide');
+                } else {
+                    if (response.Counter === 9999) {
+                        alert("Duplicate Item..!!");
+                    }
+                }
+            }
+        });
+        });
+
+        $("#item").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("ItemAutoCompleteAll", "CustomerFeedback")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { prefix: $("#item").val(), cust_num: $("#cust_num").val() },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Text, value: item.Value }
+                        }))
+                    }
+                })
+            },
+            appendTo: "#AddModal",
+            messages: {
+                noResults: "", results: function () { }
+            },
+            minLength: 0
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+    </script>
+}

@@ -1,0 +1,410 @@
+﻿@model WebAppTDIPortalE_Motor.Models.PKPModel
+
+@{
+    ViewBag.menu = "PKP";
+    ViewBag.Title = "Edit Penanganan Keluhan Pelanggan";
+    ViewBag.submenu = "PKP_Edit";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <form class="form-horizontal" method="POST" id="FormNew" role="form" enctype="multipart/form-data">
+                    @Html.HiddenFor(m => m.pkp, new { @Value = Model.pkp })
+                    @Html.HiddenFor(m => m.description, new { @Value = Model.description })
+                    @Html.HiddenFor(m => m.um, new { @Value = Model.um })
+                    @Html.HiddenFor(m => m.ship_to, new { @Value = Model.ship_to })
+                    @Html.HiddenFor(m => m.cust_name, new { @Value = Model.cust_name })
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="item" class="col-form-label">Nama Mall/Toko/Pelanggan:</label>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="cust_num" name="cust_num" disabled="disabled" style="padding: 0.2rem 1rem;" value="@Model.cust_num">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="cust_name" maxlength="255" name="cust_name" disabled="disabled" style="padding: 0.2rem 1rem;" value="@Model.cust_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">Tanggal:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control datepickers" value="@Model.pkp_date.ToString("dd/MM/yyyy")" id="pkp_date" name="pkp_date" style="padding: 0.2rem 1rem;">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">Cabang/Alamat:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.cust_seq, new { @Value = Model.cust_seq, @placeholder = "Ship To", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                                <input type="text" class="form-control" id="ship_tos" name="ship_tos" value="@Model.ship_to" disabled="disabled" style="padding: 0.2rem 1rem;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">PIC:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="pic" name="pic" style="padding: 0.2rem 1rem;" value="@Model.pic">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">Jabatan:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="jabatan" name="jabatan" style="padding: 0.2rem 1rem;" value="@Model.jabatan">
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="card-title">I. Uraian Pelanggan</h5>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="model" class="col-form-label">Model:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="model" name="model" style="padding: 0.2rem 1rem;" value="@Model.model">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">Item:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="item" name="item" style="padding: 0.2rem 1rem;" value="@Model.item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="description" class="col-form-label">Description:</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="descriptions" name="descriptions" style="padding: 0.2rem 1rem;" value="@Model.description " disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <label for="item" class="col-form-label">Qty:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="qty" name="qty" style="padding: 0.2rem 1rem;" value="@Model.qty">
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <label for="item" class="col-form-label">UM:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ums" name="ums" value="@Model.um" style="padding: 0.2rem 1rem;" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">No. Rangka:</label>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="no_rangka" name="no_rangka" value="@Model.no_rangka" style="padding: 0.2rem 1rem;">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label for="item" class="col-form-label">Status:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                @if (Model.stat == "0")
+                                {
+                                <input type="text" class="form-control" id="stat" name="stat" style="padding: 0.2rem 1rem;" disabled="disabled" value="Requested">
+                                }
+                                else
+                                {
+                                <input type="text" class="form-control" id="stat" name="stat" style="padding: 0.2rem 1rem;" disabled="disabled" value="Reviewed">
+                                }
+                            </div>
+                        </div>
+                        @*<div class="col-2">
+            <label for="item" class="col-form-label">No. JOL:</label>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <input type="text" class="form-control" id="jol" name="jol" style="padding: 0.2rem 1rem;">
+            </div>
+        </div>*@
+                    </div>
+                    <h5 class="card-title">II. Analisa Penyebab (MKT/SALES/PKP)</h5>
+                    <div class="row">
+                        @*<div class="col-3">
+            <input type="checkbox" id="tdis" name="tdis">
+            <label for="tdi">TDI</label>
+            <input type="checkbox" id="nontdis" name="nontdis">
+            <label for="nontdi">Non TDI</label>
+        </div>
+        <div class="col-1">
+            <label for="item" class="col-form-label">Keputusan Perbaikan</label>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <select name="kep_perbaikan" id="kep_perbaikan">
+                    <option value="1">Langsung diperbaiki</option>
+                    <option value="2">Pergantian Sparepart</option>
+                    <option value="3">Tukar Guling</option>
+                    <option value="4">Retur Barang</option>
+                    <option value="5">Pembatalan Retur</option>
+                    <option value="6">Konsesi</option>
+                    <option value="7">Service</option>
+                    <option value="8">Discount</option>
+                    <option value="9">Lainnya</option>
+                </select>
+            </div>
+        </div>*@
+                        <div class="col-6" style="text-align:center;">
+                            <img src="@Model.strattach" alt="Image" style="width:auto; height:200px;" />
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="pictureFile" class="col-form-label">Picture</label>
+                                <input type="file" class="form-control" id="pictureFile" name="pictureFile">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="tdi">III. Rincian Keluhan</label>
+                        </div>
+                        <div class="col-10">
+                            <div class="form-group">
+                                <textarea class="form-control" id="analisa_penyebab" name="analisa_penyebab" rows="2">@Model.analisa_penyebab</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="row">
+            <div class="col-2">
+                <label for="tdi">IV. Tindakan Perbaikan</label>
+            </div>
+            <div class="col-10">
+                <div class="form-group">
+                    <textarea class="form-control" id="tindakan_perbaikan" name="tindakan_perbaikan" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="tdi">Catatan</label>
+            </div>
+            <div class="col-10">
+                <div class="form-group">
+                    <textarea class="form-control" id="catatan" name="catatan" rows="2"></textarea>
+                </div>
+            </div>
+        </div>*@
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $("#FormNew").submit(function (e) {
+            e.preventDefault();
+
+            // Get the form DOM element
+            var form = $('#FormNew')[0];
+
+            // Create a FormData object
+            var data = new FormData(form);
+
+            // Log FormData entries
+            //for (var pair of data.entries()) {
+            //    console.log(pair[0] + ': ' + pair[1]);
+            //}
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Update", "PKP")',
+                enctype: 'multipart/form-data',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (response) {
+                    if (response.Success) {
+                        alert("No : " + response.pkp + " successfully updated.");
+                        window.location = '@Url.Action("Index", "PKP")';
+                    } else {
+                        alert(response.error);
+                    }
+                }
+            });
+        });
+
+        $('.datepickers').datepicker({
+            dateFormat: 'dd/mm/yy',
+            onSelect: function (dateText) {
+                if (this.id == 'pkp_date') {
+                    var pkp_date = $('#pkp_date').val();
+                    $('#pkp_date_val').val(pkp_date);
+                }
+            }
+        });
+
+        $('#model').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("ModelAutoCompleteAll")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { prefix: $("#model").val() },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Text, value: item.Value }
+                        }))
+                    }
+                })
+            },
+            appendTo: "#AddModal",
+            select: function (event, ui) {
+                if (ui.item) {
+                    $('#model').val(ui.item.value);
+                }
+            },
+            minLength: 0,
+            change: function (event, ui) {
+                if (ui.item) {
+                    $('#model').val(ui.item.value);
+                }
+
+            },
+        }).focus(function () {
+            $(this).autocomplete('search', $(this).val())
+        });
+
+        $("#item").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("ItemAutoCompleteAll")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { prefix: $("#item").val(), model: $("#model").val() },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Text, value: item.Value }
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: function () { }
+            },
+            select: function (event, ui) {
+                if (ui.item) {
+                    $('#description').val(ui.item.label);
+                    $.ajax({
+                        url: '@Url.Action("FindItem")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { item: $("#item").val() },
+                        success: function (data) {
+                            var jsonStringify = JSON.stringify(data);
+                            var response = JSON.parse(jsonStringify);
+                            $('#item').val(response[0].item);
+                            $('#description').val(response[0].description);
+                            $('#descriptions').val(response[0].description);
+                            $('#ums').val(response[0].u_m);
+                            $('#um').val(response[0].u_m);
+                        }
+                    });
+                }
+            },
+            minLength: 0,
+            change: function (event, ui) {
+                if (ui.item) {
+                    $('#description').val(ui.item.label);
+                    $.ajax({
+                        url: '@Url.Action("FindItem")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { item: $("#item").val() },
+                        success: function (data) {
+                            var jsonStringify = JSON.stringify(data);
+                            var response = JSON.parse(jsonStringify);
+                            $('#item').val(response[0].item);
+                            $('#description').val(response[0].description);
+                            $('#um').val(response[0].u_m);
+                        }
+                    });
+                }
+
+            },
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+
+        $("#cust_seq").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCustAddr")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { prefix: $("#cust_seq").val() },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Text, value: item.Value }
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: function () { }
+            },
+            select: function (event, ui) {
+                if (ui.item) {
+                    $('#cust_seq').val(ui.item.value);
+                    $('#ship_tos').val(ui.item.label)
+                    $('#ship_to').val(ui.item.label)
+                }
+            },
+            minLength: 0,
+            change: function (event, ui) {
+                //alert('change event called');
+                if (ui.item) {
+                    $('#cust_seq').val(ui.item.value);
+                    $('#ship_tos').val(ui.item.label)
+                    $('#ship_to').val(ui.item.label)
+                }
+            }
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+
+    </script>
+}

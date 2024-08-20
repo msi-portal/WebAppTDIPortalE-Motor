@@ -1,0 +1,57 @@
+﻿@model WebAppTDIPortalE_Motor.Models.ApplicationUser
+
+@{
+    ViewBag.menu = "Manage";
+    ViewBag.submenu = "ManageUser";
+    ViewBag.Title = "Details";
+}
+
+<h2>Details.</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerCode)
+        </dd>
+    </dl>
+</div>
+<h4>List of roles for this user</h4>
+@if (ViewBag.RoleNames.Count == 0)
+{
+    <hr />
+    <p>No roles found for this user.</p>
+}
+
+<table class="table">
+
+    @foreach (var item in ViewBag.RoleNames)
+    {
+        <tr>
+            <td>
+                @item
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    <form class="user">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" }) |
+        @Html.ActionLink("Back to List", "Index", " ", new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+    </form>
+</p>
+
+
+

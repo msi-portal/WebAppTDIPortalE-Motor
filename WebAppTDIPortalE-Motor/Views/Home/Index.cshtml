@@ -1,0 +1,646 @@
+﻿@using WebAppTDIPortalE_Motor.Models
+
+@{
+    ViewBag.Title = "Home Page";
+    List<CustAllocModel> custAllocData = (List<CustAllocModel>)ViewBag.custAllocData;
+}
+
+@*<div class="jumbotron">
+        <h1>Portal E-Motor</h1>
+    </div>*@
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Credit Limit
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="credit_limit">$40,000</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-arrow-alt-circle-up fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-bottom-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                On Order Balance
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="order_balance">$215,000</div>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-bottom-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                AR Balance
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="ar_balance">50%</div>
+                                </div>
+                                @*<div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar"
+                                                 style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @*<div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-10">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Credit Limit</h6>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+    if (ViewBag.notification != "")
+    {
+        <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Notification</h6>
+                    </div>
+                    <div class="card-body">
+                        @ViewBag.notification
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-12 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">E-Motor Allocation</h6>
+                    <div class="row">
+                        <div class="col-2">
+                            Period :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownList("periodAlloc", new SelectList(ViewBag.periodAllocList, "ID", "name", 0), new { @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataAlloc" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Spec</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Qty</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Qty Outstanding</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-12 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Warning Order</h6>
+                    <div class="row">
+                        <div class="col-2">
+                            Period :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownList("periodWarn", new SelectList(ViewBag.periodWarnList, "ID", "name", 0), new { @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataCOWarn" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Sales Order</th>
+                                    <th>Item</th>
+                                    <th>Qty</th>
+                                    <th>Order Date</th>
+                                    <th>Due Date</th>
+                                    <th>Late</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Stock Information</h6>
+                    <div class="row">
+                        <div class="col-2">
+                            Period :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownList("period", new SelectList(ViewBag.periodList, "ID", "name", 0), new { @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataStockInfo" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Model</th>
+                                    <th>Sold Qty</th>
+                                    <th>Beginning Stock</th>
+                                    <th>Available Qty</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-12 col-lg-6">
+
+            <!-- Bar Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">E-Motor Allocation Grafik</h6>
+                    <div class="row">
+                        <div class="col-2">
+                            Period :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.DropDownList("period_alloc", new SelectList(ViewBag.periodList, "ID", "name", 0), new { @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+    @*<script src="~/Theme/vendor/chart.js/Chart.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="text/javascript">
+    function showCreditLimit() {
+        $.ajax({
+            url: '@Url.Action("GetCreditLimit", "Home")',
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                var jsonStringify = JSON.stringify(data);
+                var response = JSON.parse(jsonStringify);
+                $('#credit_limit').text(response[0].CreditLimit.toLocaleString("id-ID", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }));
+                $('#ar_balance').text(response[0].ARBalance.toLocaleString("id-ID", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }));
+                $('#order_balance').text(response[0].OnOrderBalance.toLocaleString("id-ID", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }));
+            }
+        });
+    }
+
+        function GetCOWarn(period) {
+        var dataCOWarn = $('#dataCOWarn')
+            .DataTable({
+                "sAjaxSource": '@Url.Action("GetCOWarn", "Home")?period=' + period,
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "columns": [
+                    {
+                        "data": "co_num",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "item",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "qty_ordered",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "order_date",
+                        "autoWidth": true,
+                        "searchable": true,
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        },
+                    }, {
+                        "data": "due_date",
+                        "autoWidth": true,
+                        "searchable": true,
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        },
+                    }, {
+                        "data": "outs_day",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                ],
+                "destroy": true,
+
+            });
+        
+        }
+
+        function GetAllocEMO(period) {
+            var dataAlloc = $('#dataAlloc')
+            .DataTable({
+                "sAjaxSource": '@Url.Action("GetAllocEMO", "Home")?period=' + period,
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "columns": [
+                    {
+                        "data": "model",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "spec",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "start_date",
+                        "autoWidth": true,
+                        "searchable": true,
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        },
+                    }, {
+                        "data": "end_date",
+                        "autoWidth": true,
+                        "searchable": true,
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        },
+                    }, {
+                        "data": "qty",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "qty_ordered",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "qty_outs",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                ],
+                "destroy": true,
+
+            });
+        }
+
+        function GetStockInfo(period) {
+            var dataStockInfo = $('#dataStockInfo')
+            .DataTable({
+                "sAjaxSource": '@Url.Action("GetStockInfo", "Home")?period=' + period,
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "columns": [
+                    {
+                        "data": "Spec",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "Model",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "SoldQty",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "BeginningStock",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "AvailableQty",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                ],
+                "destroy": true,
+
+            });
+        }
+
+        function updateChart(period) {
+
+        }
+
+        async function fetchData(period) {
+            const reponse = $.ajax({
+                url: '@Url.Action("GetAllocGraph", "Home")?period=' + period,
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    const jsonStringify = JSON.stringify(data);
+                    const response = JSON.parse(jsonStringify);
+
+                    return response;
+                }
+            });
+
+            const datapoints = await reponse;
+            //console.log(datapoints);
+            return datapoints;
+        }
+
+        function yyyymm(now) {
+            var y = now.getFullYear();
+            var m = now.getMonth() + 1;
+            var d = now.getDate();
+            return '' + y + (m < 10 ? '0' : '') + m;
+        }
+
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            // *     example: number_format(1234.56, 2, ',', ' ');
+            // *     return: '1 234,56'
+            number = (number + '').replace(',', '').replace(' ', '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+
+    $(document).ready(function () {
+
+        // Bar Chart Example
+
+        var ctx = document.getElementById("myBarChart");
+
+        let myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'E-Motor Allocation',
+                        data: [],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'CO',
+                        data: [],
+                        borderWidth: 1
+                    },
+                ]
+            },
+            destroy: true,
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: (context) => {
+                                //console.log(context[0].label);
+                                return context[0].label.replaceAll(',', ' ');
+                            },
+                        },
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+            }
+        });
+
+        showCreditLimit();
+        GetCOWarn($('#periodWarn').val());
+        GetStockInfo($('#period').val());
+        GetAllocGraph($('#period_alloc').val());
+        GetAllocEMO($('#periodAlloc').val());
+
+        $('#period').on('change', function () {
+            var period = $(this).val();
+            GetStockInfo(period);
+        });
+
+        $('#period_alloc').on('change', function () {
+            var period = $(this).val();
+            GetAllocGraph(period);
+        });
+
+        $('#periodAlloc').on('change', function () {
+            var period = $(this).val();
+            GetAllocEMO(period);
+        });
+
+        $('#periodWarn').on('change', function () {
+            var period = $(this).val();
+            GetCOWarn(period);
+        });
+
+        //periodWarn
+
+        function GetAllocGraph(period) {
+
+            fetchData(period).then(datapoints => {
+                const Spec = datapoints.map(
+                    function (index) {
+                        return index.Spec;
+
+                    }
+                )
+
+                const SpecA = Spec.map(label => label.split(' '));
+
+                const Qty = datapoints.map(
+                    function (index) {
+                        return index.Qty;
+                    }
+                )
+
+                const Qty_Alloc = datapoints.map(
+                    function (index) {
+                        return index.Qty_Alloc;
+                    }
+                )
+
+                myBarChart.data.labels = SpecA;
+                myBarChart.data.datasets[0].data = Qty_Alloc;
+                myBarChart.data.datasets[1].data = Qty;
+                myBarChart.update();
+            });
+        }
+     });
+
+
+    </script>
+}

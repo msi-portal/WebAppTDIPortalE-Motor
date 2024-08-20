@@ -1,0 +1,105 @@
+﻿@model IEnumerable<WebAppTDIPortalE_Motor.Models.ApplicationUser>
+
+@{
+    ViewBag.menu = "Manage";
+    ViewBag.submenu = "ManageUser";
+    ViewBag.Title = "User";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                @Html.ActionLink("Create New User", "Create", new { id = "CreateNew" }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+            </div>
+            <div class="col-6" style="text-align:end;">
+                <a href="~/user-portal.csv" class="btn btn-primary btn-user" style="padding: 0.2rem 1rem;">Download CSV</a>
+                <button type="button" class="btn btn-primary btn-user" data-toggle="modal" data-target="#ImportUserModal" style="padding: 0.2rem 1rem;">Import User</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @Html.ValidationSummary("", new { @class = "text-error" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    <form class="user">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+                                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+                                        @Html.ActionLink("Send Email Confimation", "SendEmailConfimation", new { id = item.Id }, new { @class = "btn btn-primary btn-user", style = "padding: 0.2rem 1rem;" })
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ImportUserModal" tabindex="-1" aria-labelledby="ImportUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        @using (Html.BeginForm("ImportUserAsync", "UsersAdmin", FormMethod.Post, new { @class = "user", @id = "frm-grn", @enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coItemModalLabel">Import User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="item" class="col-form-label">File CSV:</label>
+                                <input type="file" name="postedFile" id="postedFile" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#dataTable').DataTable();
+        });
+    </script>
+}

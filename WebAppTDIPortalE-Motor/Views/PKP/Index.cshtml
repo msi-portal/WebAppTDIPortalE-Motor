@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.menu = "PKP";
+    ViewBag.Title = "Penanganan Keluhan Pelanggan";
+    ViewBag.submenu = "PKP_List";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-primary" })
+                <div class="row">
+                    <div class="col-2" style="text-align:left;">
+                        <a class="btn btn-primary btn-user btn-block" href="@Url.Action("InputPKP")">Add</a>
+                    </div>
+                    <div class="col-10">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>PKP No</th>
+                                <th>Date</th>
+                                <th>Nama Mall/Toko/Pelanggan</th>
+                                <th>Cabang/Alamat</th>
+                                <th>PIC</th>
+                                <th>Jabatan</th>
+                                <th>Model</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="CfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable() {
+            datatable = $('#dataTable')
+                .DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": '@Url.Action("GetData")',
+                        "type": "POST",
+                        "datatype": "json",
+                    },
+                    "order": [[0, 'desc']],
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "pkp",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "pkp_date",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    return moment(data).format("DD/MM/YYYY");
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "cust_name",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ship_to",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "pic",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "jabatan",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "model",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "item",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "description",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "stat",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (data == "0") {
+                                    return '<a href="@Url.Action("EditPKP")?pkp=' + row["pkp"] + '" class="btn btn-primary btn-user btn-block">Edit</a>';
+                                } else {
+                                    return '<a href="@Url.Action("ViewPKP")?pkp=' + row["pkp"] + '" class="btn btn-primary btn-user btn-block">View</a>';
+                                }
+                            },
+                        },
+                    ],
+
+                });
+        }
+        $(document).ready(function () {
+            bindDatatable();
+        });
+
+    </script>
+}

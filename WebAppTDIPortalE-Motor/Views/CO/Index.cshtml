@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.menu = "CO";
+    ViewBag.Title = "Customer Order List";
+    ViewBag.submenu = "CO_List";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-primary" })
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>CO Number</th>
+                                <th>CO Line</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Qty Ordered</th>
+                                <th>UM</th>
+                                <th>Order Date</th>
+                                <th>Due Date</th>
+                                <th>Cust PO</th>
+                                <th>Stat</th>
+                                <th>Credit Hold Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable() {
+            datatable = $('#dataTable')
+                .DataTable({
+                    "sAjaxSource": '@Url.Action("GetData", "CO")',
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "order": [[1, 'asc']],
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "co_num",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "co_line",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "item",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "description",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "qty_ordered",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "u_m",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "order_date",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+
+                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                            },
+                        }, {
+                            "data": "due_date",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+
+                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                            },
+                        }, {
+                            "data": "cust_po",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "stat",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                var retVal = "";
+                                if (value === null) return "";
+                                if (value === "C") {
+                                    retVal = "Complete";
+                                } else if (value === "F") {
+                                    retVal = "Filled";
+                                } else if (value === "H") {
+                                    retVal = "History";
+                                } else if (value === "O") {
+                                    retVal = "Ordered";
+                                } else if (value === "P") {
+                                    retVal = "Planned";
+                                } else if (value === "Q") {
+                                    retVal = "Quoted";
+                                } else if (value === "S") {
+                                    retVal = "Stopped";
+                                } else if (value === "W") {
+                                    retVal = "Working";
+                                }
+
+                                return retVal;
+                            },
+                        }, {
+                            "data": "credit_hold",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                var retVal = "";
+                                if (value === null) return "";
+                                if (value === 1) {
+                                    retVal = "Yes";
+                                } else if (value === 0) {
+                                    retVal = "No";
+                                } 
+
+                                return retVal;
+                            },
+                        },
+                    ],
+
+                });
+        }
+        $(document).ready(function () {
+            bindDatatable();
+        });
+    </script>
+}

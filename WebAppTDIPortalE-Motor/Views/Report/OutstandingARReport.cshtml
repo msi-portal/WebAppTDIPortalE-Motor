@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.menu = "Report";
+    ViewBag.Title = "AR Invoice";
+    ViewBag.submenu = "OutstandinAR";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Filter
+                            </div>
+                            <div class="card-body" style="padding: 1.25rem 0 0 1.25rem; ">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox small">
+                                        <input type="checkbox" class="custom-control-input" id="lunas" name="lunas" checked="checked">
+                                        <label class="custom-control-label" for="lunas">
+                                            Lunas
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox small">
+                                        <input type="checkbox" class="custom-control-input" id="outstanding" name="outstanding" checked="checked">
+                                        <label class="custom-control-label" for="outstanding">
+                                            Outstanding
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Faktur</th>
+                                <th>Tanggal</th>
+                                <th>Tanggal Due Date</th>
+                                <th>Tanggal Bayar</th>
+                                <th>CO Number</th>
+                                <th>Cust PO</th>
+                                <th>Sisa</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function bindDatatable(strReport) {
+            datatable = $('#dataTable')
+                .DataTable({
+                    "sAjaxSource": '@Url.Action("OutstandingAR_GetData", "Report")?view=' + strReport,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "language": {
+                        "emptyTable": "No record found.",
+                        "processing":
+                            '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                    },
+                    "columns": [
+                        {
+                            "data": "Faktur",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Tanggal",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+                                var retVal = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                                if (retVal == "1/1/1") retVal = "";
+                                return retVal;
+                            },
+                        },
+                        {
+                            "data": "TanggalDueDate",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+                                var retVal = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                                if (retVal == "1/1/1") retVal = "";
+                                return retVal;
+                            },
+                        },
+                        {
+                            "data": "TanggalBayar",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "render": function (value) {
+                                if (value === null) return "";
+
+                                var pattern = /Date\(([^)]+)\)/;
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+                                var retVal = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                                if (retVal == "1/1/1") retVal = "";
+                                return retVal;
+                            },
+                        },
+                        {
+                            "data": "co_num",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "cust_po",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Sisa",
+                            "autoWidth": true,
+                            "searchable": true,
+                            "className": "text-right",
+                            "render": $.fn.dataTable.render.number(',', '.', 2, ''),
+                        },
+                    ],
+                    "destroy": true,
+
+                });
+        }
+        $(document).ready(function () {
+            bindDatatable(0);
+
+            $('#lunas').click(function () {
+                if ($(this).is(':checked')) {
+                    if ($("#outstanding").is(":checked")) {
+                        bindDatatable(0);
+                    } else {
+                        bindDatatable(1);
+                    }
+                } else {
+                    if ($("#outstanding").is(":checked")) {
+                        bindDatatable(2);
+                    }
+                }
+            });
+
+            $('#outstanding').click(function () {
+                if ($(this).is(':checked')) {
+                    if ($("#lunas").is(":checked")) {
+                        bindDatatable(0);
+                    } else {
+                        bindDatatable(2);
+                    }
+                } else {
+                    if ($("#lunas").is(":checked")) {
+                        bindDatatable(1);
+                    }
+                }
+            });
+        });
+    </script>
+}

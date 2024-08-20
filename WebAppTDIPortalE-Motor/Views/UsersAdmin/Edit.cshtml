@@ -1,0 +1,119 @@
+﻿@model WebAppTDIPortalE_Motor.Models.EditUserViewModel
+
+@{
+    ViewBag.menu = "Manage";
+    ViewBag.submenu = "ManageUser";
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit.</h2>
+
+
+@using (Html.BeginForm("Edit", "UsersAdmin", FormMethod.Post, new { @class = "user", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="user">
+    <h4>Edit User Form.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-error" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerCode, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.CustomerCode, new { @class = "form-control", @id = "tags" })
+            @Html.ValidationMessageFor(model => model.CustomerCode)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Warehouse, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Warehouse, new { @class = "form-control", @id = "tagswhse" })
+            @Html.ValidationMessageFor(model => model.Warehouse)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Roles", new { @class = "control-label col-md-2" })
+        <span class=" col-md-10">
+            @foreach (var item in Model.RolesList)
+            {
+                <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                @Html.Label(item.Value, new { @class = "control-label" })
+            }
+        </span>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary btn-user" style="padding: 0.2rem 1rem;" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts{
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tags").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("AutoComplete","Account")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { prefix: $("#tags").val() },
+                        success: function (data) {
+                            console.log("data" + JSON.stringify(data));
+                            response($.map(data, function (item) {
+                                return { label: item.Text }
+                            }))
+                        }
+                    })
+                },
+                minLength: 0,
+                messages: {
+                    noResults: "", results: function () { }
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+
+            $("#tagswhse").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("AutoCompleteWHSE","Account")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { prefix: $("#tagswhse").val() },
+                        success: function (data) {
+                            console.log("data" + JSON.stringify(data));
+                            response($.map(data, function (item) {
+                                return { label: item.Text }
+                            }))
+                        }
+                    })
+                },
+                minLength: 0,
+                messages: {
+                    noResults: "", results: function () { }
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+
+        });
+    </script>
+}
