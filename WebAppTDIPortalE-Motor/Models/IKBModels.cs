@@ -67,6 +67,7 @@ namespace WebAppTDIPortalE_Motor.Models
         public string SubsidiClaimStatus { get; set; }
         public bool ClaimStatus { get; set; }
         public DateTime SubsidiPaidDate { get; set; }
+        public string notes { get; set; }
     }
 
     public class IKBHeaderModel
@@ -209,6 +210,14 @@ namespace WebAppTDIPortalE_Motor.Models
 
     }
 
+    public class UploadFakturModel
+    {
+        public string FilePath { get; set; }
+        [Required(ErrorMessage = "Choose file.")]
+        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlxs|.csv)$", ErrorMessage = "Only for XLS, XLXS, CSV file.")]
+        public HttpPostedFileBase PostedFile { get; set; }
+    }
+
     public class type
     {
         public string code { get; set; }
@@ -344,5 +353,54 @@ namespace WebAppTDIPortalE_Motor.Models
         public string id { get; set; }
         public string description { get; set; }
     }
+
+    //public class FKModel
+    //{
+    //    public FKModel()
+    //    {
+
+    //    }
+
+    //    public string [Alamat] { get; set; }
+    //    public string [Atas Nama] { get; set; }
+    //    public string [Bahan Bakar] { get; set; }
+    //    public int [Co Line] { get; set; }
+    //    public int [Co Line Qty] { get; set; }
+    //    public string [Co Num] { get; set; }
+    //    public string [Cust Num] { get; set; }
+    //    public string [Description] { get; set; }
+    //    public string [Formulir Ab] { get; set; }
+    //    public int [Identity Line] { get; set; }
+    //    public string [Item] { get; set; }
+    //    public decimal [Item Price] { get; set; }
+    //    public string [Jenis] { get; set; }
+    //    public string [Merk] { get; set; }
+    //    public string [Model] { get; set; }
+    //    public string [Warna] { get; set; }
+    //    public string [No Faktur] { get; set; }
+    //    public string [No KTP] { get; set; }
+    //    public string [No Mesin] { get; set; }
+    //    public string [No Rangka] { get; set; }
+    //    public string [PIB] { get; set; }
+    //    public int [Seq] { get; set; }
+    //    public string [Silinder] { get; set; }
+    //    public string [Site Ref] { get; set; }
+    //    public string [SRUT] { get; set; }
+    //    public string [SUT] { get; set; }
+    //    public int [Tahun] { get; set; }
+    //    public DateTime [Tgl Faktur] { get; set; }
+    //    public string [TPT] { get; set; }
+    //    public string [Type] { get; set; }
+    //    public decimal[Harga Revisi] { get; set; }
+    //    public int [Revisi] { get; set; }
+    //    public int [Claim Cashback] { get; set; }
+    //    public int [Claim Sepeda] { get; set; }
+    //    public string [SubsidiClaimStatus] { get; set; }
+    //    public string [Provinsi] { get; set; }
+    //    public string [Kabupaten] { get; set; }
+    //    public string [Kecamatan] { get; set; }
+    //    public string [Desa] { get; set; }
+
+    //}
 
 }

@@ -190,5 +190,35 @@ namespace WebAppTDIPortalE_Motor
             return listData;
         }
 
+        public DataSet RetrieveDataTablebySP(string queryString)
+        {
+            DataSet ds = new DataSet();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection01"].ConnectionString))
+            {
+                //using (SqlCommand cmd = conn.CreateCommand())
+                //{
+                //    if (conn.State == ConnectionState.Closed)
+                //        conn.Open();
+
+                //    cmd.CommandText = queryString;
+                //    cmd.ExecuteReader();
+                //    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                //    {
+                //        da.Fill(ds);
+                //    }
+                //}
+                using (SqlCommand cmd = new SqlCommand(queryString, conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(ds);
+                    }
+                }
+            }
+
+            return ds;
+        }
+
     }
 }

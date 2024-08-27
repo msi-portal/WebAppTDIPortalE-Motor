@@ -38,7 +38,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         @*@Html.TextBoxFor(m => m.order_date, new { @Value = Model.order_date, @placeholder = "Date", @class = "datepickers form-control form-control-user", @style = "padding: 0.2rem 1rem;" })*@
-                        <input type="text" class="form-control datepickers form-control-user" value="@Model.order_date.ToString("MM/dd/yyyy")" id="order_date" name="order_date" style = "padding: 0.2rem 1rem;">
+                        <input type="text" class="form-control datepickers form-control-user" value="@Model.order_date.ToString("MM/dd/yyyy")" id="order_date" name="order_date" style="padding: 0.2rem 1rem;">
 
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" value="@Model.whse" id="whse_1" name="whse_1" style="padding: 0.2rem 1rem;" >
+                        <input type="text" class="form-control form-control-user" value="@Model.whse" id="whse_1" name="whse_1" style="padding: 0.2rem 1rem;">
                     </div>
                 </div>
             </div>
@@ -85,11 +85,11 @@
                             </label>
                         </div>
                         @*<div class="custom-control custom-checkbox small">
-                            <input type="checkbox" class="custom-control-input" id="sparepart" name="sparepart" value="@Model.sparepart">
-                            <label class="custom-control-label" for="sparepart-label">
-                                Sparepart
-                            </label>
-                        </div>*@
+                                <input type="checkbox" class="custom-control-input" id="sparepart" name="sparepart" value="@Model.sparepart">
+                                <label class="custom-control-label" for="sparepart-label">
+                                    Sparepart
+                                </label>
+                            </div>*@
                     </div>
                 </div>
             </div>
@@ -157,12 +157,12 @@
                             </div>
                         </div>
                         @*<div class="col-6">
-                    <div class="form-group">
-                        <label for="spec" class="col-form-label">Spec:</label>
-                        <input type="text" class="form-control" id="spec" name="spec">
-                    </div>
+                                <div class="form-group">
+                                    <label for="spec" class="col-form-label">Spec:</label>
+                                    <input type="text" class="form-control" id="spec" name="spec">
+                                </div>
 
-                </div>*@
+                            </div>*@
                     </div>
 
                     <div class="row">
@@ -233,14 +233,15 @@
 @section Scripts{
     <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
     <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
 
     <script type="text/javascript">
     function calcNetPrice() {
         $('#net_price').val($('#price').val() * $('#qty').val());
     }
-        
+
     function bindDatatable() {
         datatable = $('#coitemData')
             .DataTable({
@@ -288,15 +289,12 @@
                     "data": "due_date",
                     "autoWidth": true,
                     "searchable": true,
-                    "render": function (value) {
-                            if (value === null) return "";
-
-                            var pattern = /Date\(([^)]+)\)/;
-                            var results = pattern.exec(value);
-                            var dt = new Date(parseFloat(results[1]));
-
-                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                        },
+                    "render": function (data, type, row) {
+                        if (type === "display" || type === "filter") {
+                            return moment(data).format("MM/DD/YYYY");
+                        }
+                        return data;
+                    },
                 },
                 {
                     data: "co_line", render: function (data, type, row) {
@@ -589,7 +587,7 @@
             var qty_alloc = $("#qty_alloc").val();
             var unit_cost = $("#unit_cost").val();
             var matl_cost = $("#matl_cost").val();
-            
+
             var net_price = $("#price").val() * $("#qty").val();
             var due_date = $("#due_date").val();
             if (parseFloat(qty) > parseFloat(qty_alloc)) {

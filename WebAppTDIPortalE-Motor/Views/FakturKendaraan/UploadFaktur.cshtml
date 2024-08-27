@@ -1,0 +1,190 @@
+﻿@model WebAppTDIPortalE_Motor.Models.UploadFakturModel
+
+@{
+    ViewBag.menu = "FK";
+    ViewBag.Title = "Upload Faktur Kendaraan";
+    ViewBag.submenu = "FK_Upload";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+                <form method="post" id="fakturForm">
+
+                    <div class="row mb-4">
+                        <div class="col-12" style="text-align: center;">
+                            <p>Upload File (.CSV) </p>
+                            @Html.TextBoxFor(m => m.PostedFile, new { type = "file", @id = "PostedFile", @accept = ".csv" }) @*, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel*@
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-4">
+                            &nbsp;
+                        </div>
+                        <div class="col-2" style="text-align:center;">
+                            <input type="button" value="Upload" class="btn btn-primary btn-user btn-block btn-upload" id="btn-upload" />
+                        </div>
+                        <div class="col-2" style="text-align:center;">
+                            <input type="button" value="Submit" class="btn btn-primary btn-user btn-block btn-submit" id="btn-submit" />
+                        </div>
+                        <div class="col-4">
+                            &nbsp;
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataFaktur" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Alamat</th>
+                                <th>Atas Nama</th>
+                                <th>Bahan Bakar</th>
+                                <th>Co Line</th>
+                                <th>Co Line Qty</th>
+                                <th>Co Num</th>
+                                <th>Cust Num</th>
+                                <th>Description</th>
+                                <th>Formulir Ab</th>
+                                <th>Identity Line</th>
+                                <th>Item</th>
+                                <th>Item Price</th>
+                                <th>Jenis</th>
+                                <th>Merk</th>
+                                <th>Model</th>
+                                <th>Warna</th>
+                                <th>No Faktur</th>
+                                <th>No KTP</th>
+                                <th>No Mesin</th>
+                                <th>No Rangka</th>
+                                <th>PIB</th>
+                                <th>Seq</th>
+                                <th>Silinder</th>
+                                <th>Site Ref</th>
+                                <th>SRUT</th>
+                                <th>SUT</th>
+                                <th>Tahun</th>
+                                <th>Tgl Faktur</th>
+                                <th>TPT</th>
+                                <th>Type</th>
+                                <th>Harga Revisi</th>
+                                <th>Revisi</th>
+                                <th>Claim Cashback</th>
+                                <th>Claim Sepeda</th>
+                                <th>SubsidiClaimStatus</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Kecamatan</th>
+                                <th>Desa</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function BindData() {
+            $('#dataFaktur').DataTable({
+                "ajax": {
+                    "url": "@Url.Action("GetFKData", "FakturKendaraan")",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "destroy": true,
+                "columns": [
+                    { "data": "notes", "autoWidth": true, "searchable": true, },
+                    { "data": "alamat", "autoWidth": true, "searchable": true, },
+                    { "data": "atas_nama", "autoWidth": true, "searchable": true, },
+                    { "data": "bahan_bakar", "autoWidth": true, "searchable": true, },
+                    { "data": "co_line", "autoWidth": true, "searchable": true, },
+                    { "data": "co_line_qty", "autoWidth": true, "searchable": true, },
+                    { "data": "co_num", "autoWidth": true, "searchable": true, },
+                    { "data": "cust_num", "autoWidth": true, "searchable": true, },
+                    { "data": "description", "autoWidth": true, "searchable": true, },
+                    { "data": "formulir_AB", "autoWidth": true, "searchable": true, },
+                    { "data": "identity_line", "autoWidth": true, "searchable": true, },
+                    { "data": "item", "autoWidth": true, "searchable": true, },
+                    { "data": "Item_price", "autoWidth": true, "searchable": true, },
+                    { "data": "jenis", "autoWidth": true, "searchable": true, },
+                    { "data": "merk", "autoWidth": true, "searchable": true, },
+                    { "data": "model", "autoWidth": true, "searchable": true, },
+                    { "data": "warna", "autoWidth": true, "searchable": true, },
+                    { "data": "no_faktur", "autoWidth": true, "searchable": true, },
+                    { "data": "no_ktp", "autoWidth": true, "searchable": true, type: 'string' },
+                    { "data": "no_mesin", "autoWidth": true, "searchable": true, },
+                    { "data": "no_rangka", "autoWidth": true, "searchable": true, },
+                    { "data": "pib", "autoWidth": true, "searchable": true, },
+                    { "data": "seq", "autoWidth": true, "searchable": true, },
+                    { "data": "silinder", "autoWidth": true, "searchable": true, },
+                    { "data": "site_ref", "autoWidth": true, "searchable": true, },
+                    { "data": "srut", "autoWidth": true, "searchable": true, },
+                    { "data": "sut", "autoWidth": true, "searchable": true, },
+                    { "data": "tahun", "autoWidth": true, "searchable": true, },
+                    {
+                        "data": "tgl_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                            if (type === "display" || type === "filter") {
+                                return moment(data).format("MM/DD/YYYY");
+                            }
+                            return data;
+                        }
+                    },
+                    { "data": "tpt", "autoWidth": true, "searchable": true, },
+                    { "data": "type", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_harga_revisi", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_revisi", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_claim_cashback", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_claim_sepeda", "autoWidth": true, "searchable": true, },
+                    { "data": "SubsidiClaimStatus", "autoWidth": true, "searchable": true, },
+                    { "data": "provinsi", "autoWidth": true, "searchable": true, },
+                    { "data": "kabupaten", "autoWidth": true, "searchable": true, },
+                    { "data": "kecamatan", "autoWidth": true, "searchable": true, },
+                    { "data": "desa", "autoWidth": true, "searchable": true, },
+                ]
+            });
+        }
+
+        $(document).ready(function () {
+            $("#btn-upload").on("click", function () {
+                BindData();
+            });
+
+            $("#PostedFile").on("change", function () {
+                // Get the form DOM element
+                var form = $('#fakturForm')[0];
+
+                // Create a FormData object
+                var data = new FormData(form);
+                 $.ajax({
+                     url: '@Url.Action("UploadFile")',
+                     enctype: 'multipart/form-data',
+                     processData: false,
+                     contentType: false,
+                     cache: false,
+                     timeout: 600000,
+                     type: 'post',
+                     data: data
+                 }).done(function (response) {
+                     if (response.Success) {
+                         alert("Total Data terupload : [" + response.Counter + "]");
+                     }
+                 });
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,296 @@
+﻿
+@{
+    ViewBag.menu = "FK";
+    ViewBag.Title = "Download Faktur Kendaraan";
+    ViewBag.submenu = "FK_Download";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <form method="post" id="fakturForm">
+                    <div class="row">
+                        <div class="col-2">
+                            Start Date :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.Hidden("start_date_val", DateTime.Today.ToString("MM/dd/yyyy"))
+                                <input type="text" class="form-control datepickers form-control-user" id="start_date" name="start_date" style="padding: 0.2rem 1rem;">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            End Date :
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                @Html.Hidden("end_date_val", DateTime.Today.ToString("MM/dd/yyyy"))
+                                <input type="text" class="form-control datepickers form-control-user" id="end_date" name="end_date" style="padding: 0.2rem 1rem;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            &nbsp;
+                        </div>
+                        <div class="col-4" style="text-align:center;">
+                            <button type="button" class="btn btn-primary btn-user btn-block" id="btnPreview">Preview</button>
+                        </div>
+                        <div class="col-4">
+                            &nbsp;
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataFaktur" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Alamat</th>
+                                <th>Atas Nama</th>
+                                <th>Bahan Bakar</th>
+                                <th>Co Line</th>
+                                <th>Co Line Qty</th>
+                                <th>Co Num</th>
+                                <th>Cust Num</th>
+                                <th>Description</th>
+                                <th>Formulir Ab</th>
+                                <th>Identity Line</th>
+                                <th>Item</th>
+                                <th>Item Price</th>
+                                <th>Jenis</th>
+                                <th>Merk</th>
+                                <th>Model</th>
+                                <th>Warna</th>
+                                <th>No Faktur</th>
+                                <th>No KTP</th>
+                                <th>No Mesin</th>
+                                <th>No Rangka</th>
+                                <th>PIB</th>
+                                <th>Seq</th>
+                                <th>Silinder</th>
+                                <th>Site Ref</th>
+                                <th>SRUT</th>
+                                <th>SUT</th>
+                                <th>Tahun</th>
+                                <th>Tgl Faktur</th>
+                                <th>TPT</th>
+                                <th>Type</th>
+                                <th>Harga Revisi</th>
+                                <th>Revisi</th>
+                                <th>Claim Cashback</th>
+                                <th>Claim Sepeda</th>
+                                <th>SubsidiClaimStatus</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Kecamatan</th>
+                                <th>Desa</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @*<script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>*@
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.1/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.5/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.5/js/select.dataTables.js"></script>
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
+    <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function BindDataTables() {
+            $('#dataFaktur').DataTable({
+                "paging": false,
+                "layout": {
+                    "topStart": {
+                        "buttons": [{
+                            extend: 'excel',
+                            text: 'Download Excel',
+                            title: null,
+                            exportOptions: {
+                                modifier: {
+                                    page: 'all'
+                                }
+                            }
+                        }, {
+                                extend: 'csv',
+                                text: 'Download CSV',
+                                title: null,
+                                exportOptions: {
+                                    modifier: {
+                                        page: 'all'
+                                    }
+                                }
+                            }]
+                    }
+                },
+                "processing": true,
+                "serverSide": true,
+                "destroy": true,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "ajax": {
+                    "url": "@Url.Action("GetDataFaktur", "FakturKendaraan")",
+                    "type": "POST",
+                    "datatype": "json",
+                    "data": {
+                        start_date: $("#start_date_val").val(),
+                        end_date: $("#end_date_val").val(),
+                    },
+                },
+                "columns": [
+                    { "data": "alamat", "autoWidth": true, "searchable": true, },
+                    { "data": "atas_nama", "autoWidth": true, "searchable": true, },
+                    { "data": "bahan_bakar", "autoWidth": true, "searchable": true, },
+                    { "data": "co_line", "autoWidth": true, "searchable": true, },
+                    { "data": "co_line_qty", "autoWidth": true, "searchable": true, },
+                    { "data": "co_num", "autoWidth": true, "searchable": true, },
+                    { "data": "cust_num", "autoWidth": true, "searchable": true, },
+                    { "data": "description", "autoWidth": true, "searchable": true, },
+                    { "data": "formulir_AB", "autoWidth": true, "searchable": true, },
+                    { "data": "identity_line", "autoWidth": true, "searchable": true, },
+                    { "data": "item", "autoWidth": true, "searchable": true, },
+                    { "data": "Item_price", "autoWidth": true, "searchable": true, },
+                    { "data": "jenis", "autoWidth": true, "searchable": true, },
+                    { "data": "merk", "autoWidth": true, "searchable": true, },
+                    { "data": "model", "autoWidth": true, "searchable": true, },
+                    { "data": "warna", "autoWidth": true, "searchable": true, },
+                    { "data": "no_faktur", "autoWidth": true, "searchable": true, },
+                    { "data": "no_ktp", "autoWidth": true, "searchable": true, },
+                    { "data": "no_mesin", "autoWidth": true, "searchable": true, },
+                    { "data": "no_rangka", "autoWidth": true, "searchable": true, },
+                    { "data": "pib", "autoWidth": true, "searchable": true, },
+                    { "data": "seq", "autoWidth": true, "searchable": true, },
+                    { "data": "silinder", "autoWidth": true, "searchable": true, },
+                    { "data": "site_ref", "autoWidth": true, "searchable": true, },
+                    { "data": "srut", "autoWidth": true, "searchable": true, },
+                    { "data": "sut", "autoWidth": true, "searchable": true, },
+                    { "data": "tahun", "autoWidth": true, "searchable": true, },
+                    {
+                        "data": "tgl_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                            if (type === "display" || type === "filter") {
+                                return moment(data).format("MM/DD/YYYY");
+                            }
+                            return data;
+                        }
+                    },
+                    { "data": "tpt", "autoWidth": true, "searchable": true, },
+                    { "data": "type", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_harga_revisi", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_revisi", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_claim_cashback", "autoWidth": true, "searchable": true, },
+                    { "data": "uf_claim_sepeda", "autoWidth": true, "searchable": true, },
+                    { "data": "SubsidiClaimStatus", "autoWidth": true, "searchable": true, },
+                    { "data": "provinsi", "autoWidth": true, "searchable": true, },
+                    { "data": "kabupaten", "autoWidth": true, "searchable": true, },
+                    { "data": "kecamatan", "autoWidth": true, "searchable": true, },
+                    { "data": "desa", "autoWidth": true, "searchable": true, },
+                ]
+            });
+        }
+
+        $(document).ready(function () {
+            BindDataTables();
+            $('.datepickers').datepicker({
+                dateFormat: 'mm/dd/yy',
+                onSelect: function (dateText) {
+                    if (this.id == 'start_date') {
+                        var start_date = $('#start_date').val();
+                        $('#start_date_val').val(start_date);
+                    } else if (this.id == 'end_date') {
+                        var end_date = $('#end_date').val();
+                        $('#end_date_val').val(end_date);
+                    }
+                }
+            });
+
+            $('#btnPreview').on('click', function () {
+                BindDataTables();
+            })
+
+            $('#btnDownload').on('click', function () {
+                var form = $('#fakturForm')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("DownloadDataFaktur", "FakturKendaraan")',
+                    type: "POST",
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "JSON",
+                    success: function (data) {
+                        console.log(data)
+
+                    }
+                });
+            })
+
+            @*$("#fakturForm").submit(function (e) {
+                e.preventDefault();
+
+                // var formData = new FormData(this);
+                var form = $('#fakturForm')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("GetDataFaktur", "FakturKendaraan")',
+                    type: "POST",
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "JSON",
+                    success: function (data) {
+                        console.log(data)
+                        if (data.Success) {
+
+                            dataFaktur.ajax.reload();
+                            $('#routingDetailActiveModal').modal('hide');
+                            alert("Work Center Detail updated.");
+
+                        } else {
+                            if (data.Counter = 9999) {
+                                var err = "";
+                                $.each(data.errors, function (key, value) {
+                                    err += value + "\n";
+                                });
+                                alert(err);
+                            }
+                        }
+                    }
+                });
+
+                });*@
+        });
+    </script>
+}

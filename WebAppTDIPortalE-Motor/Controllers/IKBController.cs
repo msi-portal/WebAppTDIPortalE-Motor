@@ -552,7 +552,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
             data = br.ReadBytes((int)numBytes);
 
             return data;
-        }
+        }        
 
         [HttpPost]
         public ActionResult UpdateIKB(IKBInputViewModel model, FormCollection formCollection, HttpPostedFileBase postedFile)

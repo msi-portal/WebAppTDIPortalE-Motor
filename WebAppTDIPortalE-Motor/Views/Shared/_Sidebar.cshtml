@@ -75,7 +75,7 @@
     </li>
     <li class="nav-item @(ViewBag.menu == "PKP" ? "active" : "")">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePKP"
-           aria-expanded="true" aria-controls="collapseCo">
+           aria-expanded="true" aria-controls="collapsePKP">
             <i class="fas fa-fw fa-folder"></i>
             <span>Penanganan Keluhan Pelanggan</span>
         </a>
@@ -85,21 +85,34 @@
             </div>
         </div>
     </li>
-    @*<li class="nav-item @(ViewBag.menu == "CF" ? "active" : "")">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseCf"
-           aria-expanded="true" aria-controls="collapseCo">
+    <li class="nav-item @(ViewBag.menu == "FK" ? "active" : "")">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseFK"
+           aria-expanded="true" aria-controls="collapseFK">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Feedback</span>
+            <span>Faktur Kendaraan</span>
         </a>
-        <div id="collapseCf" class="collapse @(ViewBag.menu == "CF" ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseFK" class="collapse @(ViewBag.menu == "FK" ? "show" : "")" aria-labelledby="headingFK" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(ViewBag.submenu == "CF_Add" ? "active" : "")" href="@Url.Action("CreateCF", "CustomerFeedback")">Create Feedback</a>
-                <a class="collapse-item @(ViewBag.submenu == "CF_List" ? "active" : "")" href="@Url.Action("Index", "CustomerFeedback")">Feedback List</a>
-                <a class="collapse-item @(ViewBag.submenu == "POReceivingMonitoring" ? "active" : "")" href="@Url.Action("ReceivingMonitoring", "PO")">PO Receiving Monitoring</a>
-                    <a class="collapse-item @(ViewBag.submenu == "PODownload" ? "active" : "")" href="@Url.Action("Download", "PO")">Download PO</a>
+                <a class="collapse-item @(ViewBag.submenu == "FK_Download" ? "active" : "")" href="@Url.Action("DownloadFaktur", "FakturKendaraan")">Download Faktur</a>
+                <a class="collapse-item @(ViewBag.submenu == "FK_Upload" ? "active" : "")" href="@Url.Action("UploadFaktur", "FakturKendaraan")">Upload Faktur</a>
             </div>
         </div>
-    </li>*@
+    </li>
+    @*<li class="nav-item @(ViewBag.menu == "CF" ? "active" : "")">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseCf"
+               aria-expanded="true" aria-controls="collapseCo">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Feedback</span>
+            </a>
+            <div id="collapseCf" class="collapse @(ViewBag.menu == "CF" ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item @(ViewBag.submenu == "CF_Add" ? "active" : "")" href="@Url.Action("CreateCF", "CustomerFeedback")">Create Feedback</a>
+                    <a class="collapse-item @(ViewBag.submenu == "CF_List" ? "active" : "")" href="@Url.Action("Index", "CustomerFeedback")">Feedback List</a>
+                    <a class="collapse-item @(ViewBag.submenu == "POReceivingMonitoring" ? "active" : "")" href="@Url.Action("ReceivingMonitoring", "PO")">PO Receiving Monitoring</a>
+                        <a class="collapse-item @(ViewBag.submenu == "PODownload" ? "active" : "")" href="@Url.Action("Download", "PO")">Download PO</a>
+                </div>
+            </div>
+        </li>*@
     @*<li class="nav-item @(ViewBag.menu == "PO" ? "active" : "")">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
