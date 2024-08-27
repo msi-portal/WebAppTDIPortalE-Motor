@@ -479,13 +479,15 @@ namespace WebAppTDIPortalE_Motor.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetFKData(DataTableAjaxPostModel param)
+        public ActionResult GetFKData(DataTableAjaxPostModel param, string stat)
         {
             listOfFakturKendaraan = Session["FKData"] as List<IKBModel>;
+            List<IKBModel> listOfFK = new List<IKBModel>();
 
             string strsql = "";
 
             bool fkValid = true;
+            int idx = 0;
             foreach (IKBModel model in listOfFakturKendaraan)
             {
                 string idPr = null;
@@ -494,10 +496,9 @@ namespace WebAppTDIPortalE_Motor.Controllers
                 string idDes = null;
                 fkValid = true;
 
-
                 List<provinsi> listProp = new WilayahServices<provinsi>().GetWilayah("provinsi");
 
-                listProp = listProp.Where(x => (x.description ?? "").ToLower().Contains(model.provinsi.ToLower())).ToList();
+                listProp = listProp.Where(x => (x.description ?? "").ToLower().Equals(model.provinsi.ToLower())).ToList();
                 if (listProp.Count() == 0)
                 {
                     fkValid = false;
@@ -508,7 +509,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                     idPr = listProp[0].id;
                     List<kabupaten> listKab = new WilayahServices<kabupaten>().GetWilayah("kabupaten/getByProvinsi", idPr);
 
-                    listKab = listKab.Where(x => (x.description ?? "").ToLower().Contains(model.kabupaten.ToLower())).ToList();
+                    listKab = listKab.Where(x => (x.description ?? "").ToLower().Equals(model.kabupaten.ToLower())).ToList();
                     if (listKab.Count() == 0)
                     {
                         fkValid = false;
@@ -519,7 +520,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                         idKab = listKab[0].id;
                         List<kecamatan> listKec = new WilayahServices<kecamatan>().GetWilayah("kecamatan/getByKabupaten", idKab);
 
-                        listKec = listKec.Where(x => (x.description ?? "").ToLower().Contains(model.kecamatan.ToLower())).ToList();
+                        listKec = listKec.Where(x => (x.description ?? "").ToLower().Equals(model.kecamatan.ToLower())).ToList();
                         if (listKec.Count() == 0)
                         {
                             fkValid = false;
@@ -530,7 +531,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                             idKec = listKec[0].id;
                             List<desa> listDes = new WilayahServices<desa>().GetWilayah("desa/getByKecamatan", idKec);
 
-                            listDes = listDes.Where(x => (x.description ?? "").ToLower().Contains(model.desa.ToLower())).ToList();
+                            listDes = listDes.Where(x => (x.description ?? "").ToLower().Equals(model.desa.ToLower())).ToList();
                             if (listDes.Count() == 0)
                             {
                                 fkValid = false;
@@ -546,50 +547,65 @@ namespace WebAppTDIPortalE_Motor.Controllers
 
                 if (fkValid)
                 {
+                    model.notes = "Data Valid";
 
-                    strsql = "Update tdi_identitas_motor_mst set " +
-                    " merk='" + model.merk + "'" +
-                    " ,jenis='" + model.jenis + "'" +
-                    " ,model='" + model.model + "'" +
-                    " ,tahun='" + model.tahun + "'" +
-                    " ,silinder='" + model.silinder + "'" +
-                    " ,warna='" + model.warna + "'" +
-                    " ,bahan_bakar='" + model.bahan_bakar + "'" +
-                    " ,atas_nama='" + model.atas_nama + "'" +
-                    " ,alamat='" + model.alamat + "'" +
-                    " ,no_ktp='" + model.no_ktp + "'" +
-                    " ,SubsidiClaimStatus='" + model.SubsidiClaimStatus + "'" +
-                    " ,uf_claim_cashback='" + model.uf_claim_cashback + "'" +
-                    " ,uf_claim_sepeda='" + model.uf_claim_sepeda + "'" +
-                    " ,provinsi='" + model.provinsi + "'" +
-                    " ,kabupaten='" + model.kabupaten + "'" +
-                    " ,kecamatan='" + model.kecamatan + "'" +
-                    " ,desa='" + model.desa + "'" +
-                    " ,provinsiId='" + idPr + "'" +
-                    " ,kabupatenId='" + idKab + "'" +
-                    " ,kecamatanId='" + idKec + "'" +
-                    " ,desaId='" + idDes + "'";
-                    strsql += " where no_rangka='" + model.no_rangka + "' and no_mesin='" + model.no_mesin + "' " +
-                        "  and co_line='" + model.co_line + "' and co_num='" + model.co_num + "' and identity_line='" + model.identity_line + "'";
-
-                    try
+                    if (stat == "1")
                     {
-                        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection01"].ToString()))
+                        strsql = "Update tdi_identitas_motor_mst set " +
+                        " merk='" + model.merk + "'" +
+                        " ,jenis='" + model.jenis + "'" +
+                        " ,model='" + model.model + "'" +
+                        " ,tahun='" + model.tahun + "'" +
+                        " ,silinder='" + model.silinder + "'" +
+                        " ,warna='" + model.warna + "'" +
+                        " ,bahan_bakar='" + model.bahan_bakar + "'" +
+                        " ,atas_nama='" + model.atas_nama + "'" +
+                        " ,alamat='" + model.alamat + "'" +
+                        " ,no_ktp='" + model.no_ktp + "'" +
+                        " ,SubsidiClaimStatus='" + model.SubsidiClaimStatus + "'" +
+                        " ,uf_claim_cashback='" + model.uf_claim_cashback + "'" +
+                        " ,uf_claim_sepeda='" + model.uf_claim_sepeda + "'" +
+                        " ,provinsi='" + model.provinsi + "'" +
+                        " ,kabupaten='" + model.kabupaten + "'" +
+                        " ,kecamatan='" + model.kecamatan + "'" +
+                        " ,desa='" + model.desa + "'" +
+                        " ,provinsiId='" + idPr + "'" +
+                        " ,kabupatenId='" + idKab + "'" +
+                        " ,kecamatanId='" + idKec + "'" +
+                        " ,desaId='" + idDes + "'";
+                        strsql += " where no_rangka='" + model.no_rangka + "' and no_mesin='" + model.no_mesin + "' " +
+                            "  and co_line='" + model.co_line + "' and co_num='" + model.co_num + "' and identity_line='" + model.identity_line + "'";
+
+                        try
                         {
-                            con.Open();
-                            SqlCommand cmd = new SqlCommand(strsql, con);
-                            cmd.ExecuteNonQuery();
-                            con.Close();
-                            model.notes += "Done";
+                            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection01"].ToString()))
+                            {
+                                con.Open();
+                                SqlCommand cmd = new SqlCommand(strsql, con);
+                                cmd.ExecuteNonQuery();
+                                con.Close();
+                                model.notes += "Done";
+                                //listOfFakturKendaraan.RemoveAt(idx);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            model.notes += e.Message.ToString();
                         }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        model.notes += e.Message.ToString();
+                        listOfFK.Add(model);
                     }
                 }
+                else
+                {
+                    listOfFK.Add(model);
+                }
+                idx++;
 
             }
+            listOfFakturKendaraan = listOfFK;
 
             var displayResult = listOfFakturKendaraan.Skip(param.start)
             .Take(param.length).ToList();
