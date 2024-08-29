@@ -123,13 +123,24 @@ namespace WebAppTDIPortalE_Motor.Controllers
             var displayResult = ikbData.ToList();
             var totalRecords = ikbData.Count();
 
-            return Json(new
+            var jsonResult = Json(new
             {
                 param.draw,
                 recordsTotal = totalRecords,
                 recordsFiltered = totalRecords,
                 data = displayResult
-            }, JsonRequestBehavior.AllowGet);
+            }, JsonRequestBehavior.AllowGet); 
+            jsonResult.MaxJsonLength = int.MaxValue;
+
+            return jsonResult;
+
+            //return Json(new
+            //{
+            //    param.draw,
+            //    recordsTotal = totalRecords,
+            //    recordsFiltered = totalRecords,
+            //    data = displayResult
+            //}, JsonRequestBehavior.AllowGet);
             
         }
 
@@ -481,10 +492,28 @@ namespace WebAppTDIPortalE_Motor.Controllers
         [HttpPost]
         public ActionResult GetFKData(DataTableAjaxPostModel param, string stat)
         {
+            string strsql = "";
+
+            var result = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+
+            string filterCust = "";
+            if (result.CustomerCode != "9999999")
+            {
+                filterCust = "ltrim(rtrim(cus.cust_num))=ltrim(rtrim('" + result.CustomerCode + "'))";
+            }
+
+            strsql = "select cus.cust_num, ca.name from customer_mst cus";
+            strsql += " inner join custaddr_mst ca on ca.cust_num = cus.cust_num and cus.site_ref = ca.site_ref ";
+            strsql += " where ca.cust_seq = 0 and cus.site_ref = '" + Global.Site + "'";
+            if (filterCust != "")
+                strsql += " and " + filterCust;
+
+            List<CustModel> custData = new DAO<CustModel>().RetrieveDataBySQL(strsql);
+
+            string custNum = custData[0].cust_num;
+
             listOfFakturKendaraan = Session["FKData"] as List<IKBModel>;
             List<IKBModel> listOfFK = new List<IKBModel>();
-
-            string strsql = "";
 
             bool fkValid = true;
             int idx = 0;
@@ -495,6 +524,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                 string idKec = null;
                 string idDes = null;
                 fkValid = true;
+                model.notes = "";
 
                 List<provinsi> listProp = new WilayahServices<provinsi>().GetWilayah("provinsi");
 
@@ -502,7 +532,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                 if (listProp.Count() == 0)
                 {
                     fkValid = false;
-                    model.notes += "Provinsi tidak terdaftar,";
+                    model.notes += "Provinsi tidak terdaftar, ";
                 }
                 else
                 {
@@ -545,6 +575,18 @@ namespace WebAppTDIPortalE_Motor.Controllers
                     }
                 }
 
+                strsql = " select * from tdi_identitas_motor_mst " +
+                    "where ltrim(rtrim(cust_num))=ltrim(rtrim('" + custNum + "')) and no_rangka='" + model.no_rangka + "' and no_mesin='" + model.no_mesin + "' " +
+                            "  and co_line='" + model.co_line + "' and co_num='" + model.co_num + "' and identity_line='" + model.identity_line + "'";
+
+                List<IKBModel> cekIKBData = new DAO<IKBModel>().RetrieveDataBySQL(strsql);
+
+                if (cekIKBData ==null || cekIKBData.Count() <= 0)
+                {
+                    model.notes += "CO Number tidak terdaftar, ";
+                    fkValid = false;
+                }
+
                 if (fkValid)
                 {
                     model.notes = "Data Valid";
@@ -573,7 +615,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                         " ,kabupatenId='" + idKab + "'" +
                         " ,kecamatanId='" + idKec + "'" +
                         " ,desaId='" + idDes + "'";
-                        strsql += " where no_rangka='" + model.no_rangka + "' and no_mesin='" + model.no_mesin + "' " +
+                        strsql += " where ltrim(rtrim(cust_num))=ltrim(rtrim('" + custNum + "')) and no_rangka='" + model.no_rangka + "' and no_mesin='" + model.no_mesin + "' " +
                             "  and co_line='" + model.co_line + "' and co_num='" + model.co_num + "' and identity_line='" + model.identity_line + "'";
 
                         try
@@ -605,19 +647,31 @@ namespace WebAppTDIPortalE_Motor.Controllers
                 idx++;
 
             }
+
             listOfFakturKendaraan = listOfFK;
 
             var displayResult = listOfFakturKendaraan.Skip(param.start)
             .Take(param.length).ToList();
             var totalRecords = listOfFakturKendaraan.Count();
 
-            return Json(new
+            var jsonResult = Json(new
             {
                 param.draw,
                 recordsTotal = totalRecords,
                 recordsFiltered = totalRecords,
-                data = listOfFakturKendaraan
+                data = displayResult
             }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+
+            return jsonResult;
+
+            //return Json(new
+            //{
+            //    param.draw,
+            //    recordsTotal = totalRecords,
+            //    recordsFiltered = totalRecords,
+            //    data = listOfFakturKendaraan
+            //}, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UploadData()
