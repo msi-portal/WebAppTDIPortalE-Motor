@@ -23,6 +23,9 @@
             @Html.HiddenFor(m => m.whse, new { @Value = Model.whse })
             @Html.Hidden("sparepart_val", 0)
             @Html.Hidden("order_date_val", DateTime.Today.ToString("MM/dd/yyyy"))
+            @Html.Hidden("start_time_val", Model.Uf_StartTime)
+            @Html.Hidden("end_time_val", Model.Uf_EndTime)
+            @Html.Hidden("date_pengembalian_val", Model.Uf_date_pengambilan.ToString("MM/dd/yyyy"))
             <div class="row">
                 <div class="col-2">
                     CO No. :
@@ -63,6 +66,29 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-3">
+                    Pengambilan Barang :
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Uf_date_pengambilan, new { @Value = Model.Uf_date_pengambilan.ToString("MM/dd/yyyy"), @placeholder = "Tanggal Pengembalian", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-2">
+                    Time :
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Uf_StartTime, new { @Value = Model.Uf_StartTime, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Uf_EndTime, new { @Value = Model.Uf_EndTime, @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-2">
                     Ship To :
                 </div>
@@ -85,11 +111,11 @@
                             </label>
                         </div>
                         @*<div class="custom-control custom-checkbox small">
-                                <input type="checkbox" class="custom-control-input" id="sparepart" name="sparepart" value="@Model.sparepart">
-                                <label class="custom-control-label" for="sparepart-label">
-                                    Sparepart
-                                </label>
-                            </div>*@
+                            <input type="checkbox" class="custom-control-input" id="sparepart" name="sparepart" value="@Model.sparepart">
+                            <label class="custom-control-label" for="sparepart-label">
+                                Sparepart
+                            </label>
+                        </div>*@
                     </div>
                 </div>
             </div>

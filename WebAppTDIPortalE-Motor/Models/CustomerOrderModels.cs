@@ -200,7 +200,9 @@ namespace WebAppTDIPortalE_Motor.Models
         public string whse { get; set; }
         public bool sparepart { get; set; }
         public DateTime order_date { get; set; }
-
+        public DateTime Uf_date_pengambilan { get; set; }
+        public string Uf_StartTime { get; set; }
+        public string Uf_EndTime { get; set; }
     }
 
     public class COItemModel

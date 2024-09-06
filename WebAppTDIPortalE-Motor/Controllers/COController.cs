@@ -151,6 +151,43 @@ namespace WebAppTDIPortalE_Motor.Controllers
             model.cust_seq = custAddrData[0].cust_seq;
             model.ship_name = custAddrData[0].name;
 
+            string tot_cust = "";
+            string dt = "";
+            string st = "";
+            string et = "";
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection01"].ToString()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "TDI_PengambilanBarang_GetCustNum";
+                cmd.Parameters.Add("@tot_cust", SqlDbType.VarChar, 7);
+                cmd.Parameters["@tot_cust"].Direction = ParameterDirection.InputOutput;
+                cmd.Parameters["@tot_cust"].Value = "0";
+                cmd.Parameters.Add("@dt", SqlDbType.VarChar, 10);
+                cmd.Parameters["@dt"].Direction = ParameterDirection.InputOutput;
+                cmd.Parameters["@dt"].Value = "";
+                cmd.Parameters.Add("@st", SqlDbType.VarChar, 8);
+                cmd.Parameters["@st"].Direction = ParameterDirection.InputOutput;
+                cmd.Parameters["@st"].Value = "";
+                cmd.Parameters.Add("@et", SqlDbType.VarChar, 8);
+                cmd.Parameters["@et"].Direction = ParameterDirection.InputOutput;
+                cmd.Parameters["@et"].Value = "";
+                cmd.Parameters.AddWithValue("@cust_num", model.cust_num);
+                int i = cmd.ExecuteNonQuery();
+                tot_cust = Convert.ToString(cmd.Parameters["@tot_cust"].Value);
+                dt = Convert.ToString(cmd.Parameters["@dt"].Value);
+                st = Convert.ToString(cmd.Parameters["@st"].Value);
+                et = Convert.ToString(cmd.Parameters["@et"].Value);
+            }
+
+            DateTime oDate = DateTime.ParseExact(dt, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
+            model.Uf_date_pengambilan = oDate;
+            model.Uf_StartTime = st;
+            model.Uf_EndTime = et;
+
             Session["CartCounter"] = null;
             Session["COItem"] = listOfCOItemModels = new List<COItemModel>();
 
@@ -233,6 +270,9 @@ namespace WebAppTDIPortalE_Motor.Controllers
                     cmd.Parameters.AddWithValue("@matl_cost_t", matl_cost_t);
                     cmd.Parameters.AddWithValue("@cost", cost);
                     cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@dt", collection["date_pengembalian_val"]); 
+                    cmd.Parameters.AddWithValue("@st", collection["start_time_val"]);
+                    cmd.Parameters.AddWithValue("@et", collection["end_time_val"]);
                     Boolean tempValue = collection["sparepart_val"] == "1" ? true : false;
                     cmd.Parameters.AddWithValue("@sparepart", (tempValue ? 1 : 0));
                     int i = cmd.ExecuteNonQuery();

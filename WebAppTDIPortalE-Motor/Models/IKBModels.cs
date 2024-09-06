@@ -87,6 +87,7 @@ namespace WebAppTDIPortalE_Motor.Models
         public string description { get; set; }
         public Decimal qty_shipped { get; set; }
         public string u_m { get; set; }
+        public DateTime tgl_faktur { get; set; }
         public DateTime order_date { get; set; }
         public DateTime ship_date { get; set; }
         public string no_mesin { get; set; }

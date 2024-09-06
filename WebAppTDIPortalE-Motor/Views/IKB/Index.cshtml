@@ -29,6 +29,8 @@
                                 <th>Claim Status</th>
                                 <th>Merk</th>
                                 <th>No. Faktur</th>
+                                <th>Tgl. Faktur</th>
+                                <th>Tgl. Order</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -43,6 +45,8 @@
     <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
 
     <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
 
@@ -118,6 +122,22 @@
                             "data": "no_faktur",
                             "autoWidth": true,
                             "searchable": true
+                        },
+                        {
+                            "data": "tgl_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    return moment(data).format("MM/DD/YYYY");
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "order_date", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    return moment(data).format("MM/DD/YYYY");
+                                }
+                                return data;
+                            }
                         },
                         {
                             data: "no_rangka", render: function (data, type, row) {

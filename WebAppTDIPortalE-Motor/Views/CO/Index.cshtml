@@ -43,6 +43,8 @@
     <script src="~/Theme/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/Theme/vendor/datatables/dataTables.dateTime.min.js"></script>
+    <script src="~/Theme/vendor/datatables/moment.min.js"></script>
+    <script src="~/Theme/vendor/datatables/datetime-moment.js"></script>
 
     <script src="~/Theme/vendor/jquery/jquery-ui.js"></script>
 
@@ -88,33 +90,24 @@
                             "data": "u_m",
                             "autoWidth": true,
                             "searchable": true
-                        }, {
-                            "data": "order_date",
-                            "autoWidth": true,
-                            "searchable": true,
-                            "render": function (value) {
-                                if (value === null) return "";
-
-                                var pattern = /Date\(([^)]+)\)/;
-                                var results = pattern.exec(value);
-                                var dt = new Date(parseFloat(results[1]));
-
-                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                            },
-                        }, {
-                            "data": "due_date",
-                            "autoWidth": true,
-                            "searchable": true,
-                            "render": function (value) {
-                                if (value === null) return "";
-
-                                var pattern = /Date\(([^)]+)\)/;
-                                var results = pattern.exec(value);
-                                var dt = new Date(parseFloat(results[1]));
-
-                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                            },
-                        }, {
+                        },
+                        {
+                            "data": "order_date", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    return moment(data).format("MM/DD/YYYY");
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "due_date", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    return moment(data).format("MM/DD/YYYY");
+                                }
+                                return data;
+                            }
+                        },
+                        {
                             "data": "cust_po",
                             "autoWidth": true,
                             "searchable": true
@@ -156,7 +149,7 @@
                                     retVal = "Yes";
                                 } else if (value === 0) {
                                     retVal = "No";
-                                } 
+                                }
 
                                 return retVal;
                             },

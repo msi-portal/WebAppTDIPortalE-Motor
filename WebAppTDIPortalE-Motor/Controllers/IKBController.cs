@@ -48,12 +48,23 @@ namespace WebAppTDIPortalE_Motor.Controllers
 
             string custNum = custData[0].cust_num;
 
+            //strsql = "select tdi_id.*" +
+            //    ", cast(co_line_qty as decimal(19,8)) qty_shipped, isnull((select count(*) from serial_mst" +
+            //    " where serial_mst.ser_num = concat(tdi_id.no_rangka, '/', tdi_id.no_mesin) " +
+            //    " and serial_mst.ref_type = 'o' and serial_mst.stat = 'i'),0) sreturn ";
+            //strsql += " from tdi_identitas_motor_mst tdi_id ";
+            //strsql += " where ltrim(rtrim(tdi_id.cust_num))=ltrim(rtrim('" + custNum + "'))" ;
+            //strsql += " order by tdi_id.CreateDate desc";
+
             strsql = "select tdi_id.*" +
-                ", cast(co_line_qty as decimal(19,8)) qty_shipped, isnull((select count(*) from serial_mst" +
-                " where serial_mst.ser_num = concat(tdi_id.no_rangka, '/', tdi_id.no_mesin) " +
-                " and serial_mst.ref_type = 'o' and serial_mst.stat = 'i'),0) sreturn ";
-            strsql += " from tdi_identitas_motor_mst tdi_id ";
-            strsql += " where ltrim(rtrim(tdi_id.cust_num))=ltrim(rtrim('" + custNum + "'))" ;
+                ", cast(tdi_id.co_line_qty as decimal(19,8)) qty_shipped" +
+                ", isnull((select count(*) from serial_mst " +
+                "      where serial_mst.ser_num = concat(tdi_id.no_rangka, '/', tdi_id.no_mesin) " +
+                "      and serial_mst.ref_type = 'o' and serial_mst.stat = 'i'),0) sreturn" +
+                ", co.order_date " +
+                " from tdi_identitas_motor_mst tdi_id " +
+                " left join co_mst co on co.co_num=tdi_id.co_num";
+            strsql += " where ltrim(rtrim(tdi_id.cust_num))=ltrim(rtrim('" + custNum + "'))";
             strsql += " order by tdi_id.CreateDate desc";
 
             List<IKBHeaderModel> ikbData = new DAO<IKBHeaderModel>().RetrieveDataBySQL(strsql);
@@ -70,6 +81,8 @@ namespace WebAppTDIPortalE_Motor.Controllers
                                               || (x.no_mesin ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               || (x.SubsidiClaimStatus ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               || (x.merk ?? "").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.order_date.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.tgl_faktur.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
                                               ).ToList();
             }
 
