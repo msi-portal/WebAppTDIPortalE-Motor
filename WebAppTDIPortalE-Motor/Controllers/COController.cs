@@ -50,7 +50,8 @@ namespace WebAppTDIPortalE_Motor.Controllers
             string custNum = custData[0].cust_num;
 
             strsql = "select ci.co_num, ci.co_line, ci.item, it.description, ci.qty_ordered," +
-                " it.u_m, co.order_date, ci.due_date, co.cust_po, ci.stat, co.cust_num, co.credit_hold ";
+                " it.u_m, co.order_date, ci.due_date, co.cust_po, ci.stat, co.cust_num, co.credit_hold," +
+                " co.Uf_date_pengambilan, co.Uf_StartTime, co.Uf_EndTime ";
             strsql += " from coitem_mst ci";
             strsql += " inner join co_mst co on co.co_num = ci.co_num and co.site_ref = ci.site_ref ";
             strsql += " inner join item_mst it on it.item = ci.item and it.site_ref = ci.site_ref ";
@@ -66,11 +67,14 @@ namespace WebAppTDIPortalE_Motor.Controllers
                                               || x.item.ToLower().Contains(param.sSearch.ToLower())
                                               || (x.description ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               || (x.u_m ?? "").ToLower().Contains(param.sSearch.ToLower())
-                                              || x.order_date.ToString("dd'/'MM'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
-                                              || x.due_date.ToString("dd'/'MM'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.order_date.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.due_date.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
                                               || (x.cust_po ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               || x.stat.ToLower().Contains(param.sSearch.ToLower())
                                               || (x.credit_hold == 1 ? "Yes" : "No").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.Uf_date_pengambilan.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || (x.Uf_StartTime ?? "").ToLower().Contains(param.sSearch.ToLower())
+                                              || (x.Uf_EndTime ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               ).ToList();
             }
 

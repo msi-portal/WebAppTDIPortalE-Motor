@@ -88,6 +88,8 @@ namespace WebAppTDIPortalE_Motor.Models
         public Decimal qty_shipped { get; set; }
         public string u_m { get; set; }
         public DateTime tgl_faktur { get; set; }
+        public DateTime tgl_generate_faktur { get; set; }
+        public DateTime tgl_print_faktur { get; set; }
         public DateTime order_date { get; set; }
         public DateTime ship_date { get; set; }
         public string no_mesin { get; set; }
@@ -97,6 +99,7 @@ namespace WebAppTDIPortalE_Motor.Models
         public string atas_nama { get; set; }
         public string SubsidiClaimStatus { get; set; }
         public int sreturn { get; set; }
+
 
     }
 

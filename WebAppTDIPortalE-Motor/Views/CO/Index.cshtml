@@ -29,6 +29,9 @@
                                 <th>Cust PO</th>
                                 <th>Stat</th>
                                 <th>Credit Hold Status</th>
+                                <th>Tanggal Pengambilan</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
                             </tr>
                         </thead>
                     </table>
@@ -153,6 +156,29 @@
 
                                 return retVal;
                             },
+                        },
+                        {
+                            "data": "Uf_date_pengambilan", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    //return moment(data).format("MM/DD/YYYY");
+                                    var todata = moment(data).format("MM/DD/YYYY");
+                                    if (todata === '01/01/0001') {
+                                        return '';
+                                    }
+                                    else {
+                                        return todata;
+                                    }
+                                }
+                                return data;
+                            }
+                        }, {
+                            "data": "Uf_StartTime",
+                            "autoWidth": true,
+                            "searchable": true
+                        }, {
+                            "data": "Uf_EndTime",
+                            "autoWidth": true,
+                            "searchable": true
                         },
                     ],
 

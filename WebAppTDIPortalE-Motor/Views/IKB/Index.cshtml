@@ -31,6 +31,8 @@
                                 <th>No. Faktur</th>
                                 <th>Tgl. Faktur</th>
                                 <th>Tgl. Order</th>
+                                <th>Tgl. Generate Faktur</th>
+                                @*<th>Tgl. Print Faktur</th>*@
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -139,6 +141,36 @@
                                 return data;
                             }
                         },
+                        {
+                            "data": "tgl_generate_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                                if (type === "display" || type === "filter") {
+                                    //return moment(data).format("MM/DD/YYYY");
+                                    var todata = moment(data).format("MM/DD/YYYY");
+                                    if (todata === '01/01/0001') {
+                                        return '';
+                                    }
+                                    else {
+                                        return todata;
+                                    }
+                                }
+                                return data;
+                            }
+                        },
+                        //{
+                        //    "data": "tgl_print_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
+                        //        if (type === "display" || type === "filter") {
+                        //            //return moment(data).format("MM/DD/YYYY");
+                        //            var todata = moment(data).format("MM/DD/YYYY");
+                        //            if (todata === '01/01/0001') {
+                        //                return '';
+                        //            }
+                        //            else {
+                        //                return todata;
+                        //            }
+                        //        }
+                        //        return data;
+                        //    }
+                        //},
                         {
                             data: "no_rangka", render: function (data, type, row) {
                                 return '<a href="@Url.Action("EditIKB", "IKB")?no_rangka=' + row.no_rangka + '&no_mesin=' + row.no_mesin + '&identity_line=' + row.identity_line + '" class="btn btn-primary btn-user btn-block">Faktur</a>';

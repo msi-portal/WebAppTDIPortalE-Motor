@@ -139,6 +139,9 @@ namespace WebAppTDIPortalE_Motor.Models
         public string stat { get; set; }
         public string cust_num { get; set; }
         public int credit_hold { get; set; }
+        public DateTime Uf_date_pengambilan { get; set; }
+        public string Uf_StartTime { get; set; }
+        public string Uf_EndTime { get; set; }
     }
 
     public class CustAddrModel

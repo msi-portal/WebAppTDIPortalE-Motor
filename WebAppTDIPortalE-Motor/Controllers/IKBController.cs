@@ -83,6 +83,8 @@ namespace WebAppTDIPortalE_Motor.Controllers
                                               || (x.merk ?? "").ToLower().Contains(param.sSearch.ToLower())
                                               || x.order_date.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
                                               || x.tgl_faktur.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.tgl_generate_faktur.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
+                                              || x.tgl_print_faktur.ToString("MM'/'dd'/'yyyy").ToLower().Contains(param.sSearch.ToLower())
                                               ).ToList();
             }
 
