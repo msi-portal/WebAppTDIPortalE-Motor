@@ -17,8 +17,8 @@
 
                     <div class="row mb-4">
                         <div class="col-12" style="text-align: center;">
-                            <p>Upload File (.CSV) </p>
-                            @Html.TextBoxFor(m => m.PostedFile, new { type = "file", @id = "PostedFile", @accept = ".csv" }) @*, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel*@
+                            <p>Upload File (.XLSX, .XLS) </p>
+                            @Html.TextBoxFor(m => m.PostedFile, new { type = "file", @id = "PostedFile", @accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" }) @*, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel*@
                         </div>
                     </div>
 
@@ -44,43 +44,38 @@
                                 <th>Keterangan</th>
                                 <th>Alamat</th>
                                 <th>Atas Nama</th>
+                                <th>No KTP</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Kecamatan</th>
+                                <th>Desa</th>
+                                <th>Formulir Ab</th>
+                                <th>PIB</th>
+                                <th>TPT</th>
+                                <th>SRUT</th>
+                                <th>SUT</th>
                                 <th>Bahan Bakar</th>
                                 <th>Co Line</th>
                                 <th>Co Line Qty</th>
                                 <th>Co Num</th>
                                 <th>Cust Num</th>
                                 <th>Description</th>
-                                <th>Formulir Ab</th>
                                 <th>Identity Line</th>
                                 <th>Item</th>
-                                <th>Item Price</th>
                                 <th>Jenis</th>
                                 <th>Merk</th>
                                 <th>Model</th>
                                 <th>Warna</th>
                                 <th>No Faktur</th>
-                                <th>No KTP</th>
                                 <th>No Mesin</th>
                                 <th>No Rangka</th>
-                                <th>PIB</th>
                                 <th>Seq</th>
                                 <th>Silinder</th>
                                 <th>Site Ref</th>
-                                <th>SRUT</th>
-                                <th>SUT</th>
                                 <th>Tahun</th>
                                 <th>Tgl Faktur</th>
-                                <th>TPT</th>
                                 <th>Type</th>
-                                <th>Harga Revisi</th>
                                 <th>Revisi</th>
-                                <th>Claim Cashback</th>
-                                <th>Claim Sepeda</th>
-                                <th>SubsidiClaimStatus</th>
-                                <th>Provinsi</th>
-                                <th>Kabupaten</th>
-                                <th>Kecamatan</th>
-                                <th>Desa</th>
                             </tr>
                         </thead>
                     </table>
@@ -118,30 +113,34 @@
                     { "data": "notes", "autoWidth": true, "searchable": true, },
                     { "data": "alamat", "autoWidth": true, "searchable": true, },
                     { "data": "atas_nama", "autoWidth": true, "searchable": true, },
+                    { "data": "no_ktp", "autoWidth": true, "searchable": true, },
+                    { "data": "provinsi", "autoWidth": true, "searchable": true, },
+                    { "data": "kabupaten", "autoWidth": true, "searchable": true, },
+                    { "data": "kecamatan", "autoWidth": true, "searchable": true, },
+                    { "data": "desa", "autoWidth": true, "searchable": true, },
+                    { "data": "formulir_AB", "autoWidth": true, "searchable": true, },
+                    { "data": "pib", "autoWidth": true, "searchable": true, },
+                    { "data": "tpt", "autoWidth": true, "searchable": true, },
+                    { "data": "srut", "autoWidth": true, "searchable": true, },
+                    { "data": "sut", "autoWidth": true, "searchable": true, },
                     { "data": "bahan_bakar", "autoWidth": true, "searchable": true, },
                     { "data": "co_line", "autoWidth": true, "searchable": true, },
                     { "data": "co_line_qty", "autoWidth": true, "searchable": true, },
                     { "data": "co_num", "autoWidth": true, "searchable": true, },
                     { "data": "cust_num", "autoWidth": true, "searchable": true, },
                     { "data": "description", "autoWidth": true, "searchable": true, },
-                    { "data": "formulir_AB", "autoWidth": true, "searchable": true, },
                     { "data": "identity_line", "autoWidth": true, "searchable": true, },
                     { "data": "item", "autoWidth": true, "searchable": true, },
-                    { "data": "Item_price", "autoWidth": true, "searchable": true, },
                     { "data": "jenis", "autoWidth": true, "searchable": true, },
                     { "data": "merk", "autoWidth": true, "searchable": true, },
                     { "data": "model", "autoWidth": true, "searchable": true, },
                     { "data": "warna", "autoWidth": true, "searchable": true, },
                     { "data": "no_faktur", "autoWidth": true, "searchable": true, },
-                    { "data": "no_ktp", "autoWidth": true, "searchable": true, type: 'string' },
                     { "data": "no_mesin", "autoWidth": true, "searchable": true, },
                     { "data": "no_rangka", "autoWidth": true, "searchable": true, },
-                    { "data": "pib", "autoWidth": true, "searchable": true, },
                     { "data": "seq", "autoWidth": true, "searchable": true, },
                     { "data": "silinder", "autoWidth": true, "searchable": true, },
                     { "data": "site_ref", "autoWidth": true, "searchable": true, },
-                    { "data": "srut", "autoWidth": true, "searchable": true, },
-                    { "data": "sut", "autoWidth": true, "searchable": true, },
                     { "data": "tahun", "autoWidth": true, "searchable": true, },
                     {
                         "data": "tgl_faktur", "autoWidth": true, "searchable": true, "render": function (data, type, row) {
@@ -151,17 +150,8 @@
                             return data;
                         }
                     },
-                    { "data": "tpt", "autoWidth": true, "searchable": true, },
                     { "data": "type", "autoWidth": true, "searchable": true, },
-                    { "data": "uf_harga_revisi", "autoWidth": true, "searchable": true, },
                     { "data": "uf_revisi", "autoWidth": true, "searchable": true, },
-                    { "data": "uf_claim_cashback", "autoWidth": true, "searchable": true, },
-                    { "data": "uf_claim_sepeda", "autoWidth": true, "searchable": true, },
-                    { "data": "SubsidiClaimStatus", "autoWidth": true, "searchable": true, },
-                    { "data": "provinsi", "autoWidth": true, "searchable": true, },
-                    { "data": "kabupaten", "autoWidth": true, "searchable": true, },
-                    { "data": "kecamatan", "autoWidth": true, "searchable": true, },
-                    { "data": "desa", "autoWidth": true, "searchable": true, },
                 ]
             });
         }

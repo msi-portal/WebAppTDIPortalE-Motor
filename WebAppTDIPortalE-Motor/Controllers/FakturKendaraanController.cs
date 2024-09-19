@@ -238,46 +238,41 @@ namespace WebAppTDIPortalE_Motor.Controllers
                     string sheet1 = excel_con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null).Rows[0]["TABLE_NAME"].ToString();
                     DataTable dtExcelData = new DataTable();
 
-                    dtExcelData.Columns.AddRange(new DataColumn[39] {
+                    dtExcelData.Columns.AddRange(new DataColumn[34] {
                         new DataColumn("Alamat", typeof(string)),
                         new DataColumn("Atas Nama", typeof(string)),
+                        new DataColumn("No KTP", typeof(string)),
+                        new DataColumn("Provinsi", typeof(string)),
+                        new DataColumn("Kabupaten", typeof(string)),
+                        new DataColumn("Kecamatan", typeof(string)),
+                        new DataColumn("Desa", typeof(string)),
+                        new DataColumn("Formulir Ab", typeof(string)),
+                        new DataColumn("PIB", typeof(string)),
+                        new DataColumn("TPT", typeof(string)),
+                        new DataColumn("SRUT", typeof(string)),
+                        new DataColumn("SUT", typeof(string)),
                         new DataColumn("Bahan Bakar", typeof(string)),
                         new DataColumn("Co Line", typeof(int)),
                         new DataColumn("Co Line Qty", typeof(int)),
                         new DataColumn("Co Num", typeof(string)),
                         new DataColumn("Cust Num", typeof(string)),
                         new DataColumn("Description", typeof(string)),
-                        new DataColumn("Formulir Ab", typeof(string)),
                         new DataColumn("Identity Line", typeof(int)),
                         new DataColumn("Item", typeof(string)),
-                        new DataColumn("Item Price", typeof(decimal)),
                         new DataColumn("Jenis", typeof(string)),
                         new DataColumn("Merk", typeof(string)),
                         new DataColumn("Model", typeof(string)),
                         new DataColumn("Warna", typeof(string)),
                         new DataColumn("No Faktur", typeof(string)),
-                        new DataColumn("No KTP", typeof(string)),
                         new DataColumn("No Mesin", typeof(string)),
                         new DataColumn("No Rangka", typeof(string)),
-                        new DataColumn("PIB", typeof(string)),
                         new DataColumn("Seq", typeof(int)),
                         new DataColumn("Silinder", typeof(string)),
                         new DataColumn("Site Ref", typeof(string)),
-                        new DataColumn("SRUT", typeof(string)),
-                        new DataColumn("SUT", typeof(string)),
                         new DataColumn("Tahun", typeof(int)),
                         new DataColumn("Tgl Faktur", typeof(DateTime)),
-                        new DataColumn("TPT", typeof(string)),
                         new DataColumn("Type", typeof(string)),
-                        new DataColumn("Harga Revisi", typeof(decimal)),
-                        new DataColumn("Revisi", typeof(int)),
-                        new DataColumn("Claim Cashback", typeof(int)),
-                        new DataColumn("Claim Sepeda", typeof(int)),
-                        new DataColumn("SubsidiClaimStatus", typeof(string)),
-                        new DataColumn("Provinsi", typeof(string)),
-                        new DataColumn("Kabupaten", typeof(string)),
-                        new DataColumn("Kecamatan", typeof(string)),
-                        new DataColumn("Desa", typeof(string))
+                        new DataColumn("Revisi", typeof(int))
                     })
                     ;
 
@@ -292,43 +287,38 @@ namespace WebAppTDIPortalE_Motor.Controllers
                         IKBModel ikb = new IKBModel();
                         ikb.alamat = item.Field<string>("Alamat");
                         ikb.atas_nama = item.Field<string>("Atas Nama");
+                        ikb.no_ktp = item.Field<string>("No KTP");
+                        ikb.provinsi = item.Field<string>("Provinsi");
+                        ikb.kabupaten = item.Field<string>("Kabupaten");
+                        ikb.kecamatan = item.Field<string>("Kecamatan");
+                        ikb.desa = item.Field<string>("Desa");
+                        ikb.formulir_AB = item.Field<string>("Formulir Ab");
+                        ikb.pib = item.Field<string>("PIB");
+                        ikb.tpt = item.Field<string>("TPT");
+                        ikb.srut = item.Field<string>("SRUT");
+                        ikb.sut = item.Field<string>("SUT");
                         ikb.bahan_bakar = item.Field<string>("Bahan Bakar");
-                        ikb.co_line = item.Field<int>("Co Line");// coline;
+                        ikb.co_line = item.Field<int>("Co Line");
                         ikb.co_line_qty = item.Field<int>("Co Line Qty");
                         ikb.co_num = item.Field<string>("Co Num");
                         ikb.cust_num = item.Field<string>("Cust Num");
                         ikb.description = item.Field<string>("Description");
-                        ikb.formulir_AB = item.Field<string>("Formulir Ab");
                         ikb.identity_line = item.Field<int>("Identity Line");
                         ikb.item = item.Field<string>("Item");
-                        ikb.Item_price = item.Field<decimal>("Item Price");
                         ikb.jenis = item.Field<string>("Jenis");
                         ikb.merk = item.Field<string>("Merk");
                         ikb.model = item.Field<string>("Model");
                         ikb.warna = item.Field<string>("Warna");
                         ikb.no_faktur = item.Field<string>("No Faktur");
-                        ikb.no_ktp = item.Field<string>("No KTP");
                         ikb.no_mesin = item.Field<string>("No Mesin");
                         ikb.no_rangka = item.Field<string>("No Rangka");
-                        ikb.pib = item.Field<string>("PIB");
                         ikb.seq = item.Field<int>("Seq");
                         ikb.silinder = item.Field<string>("Silinder");
                         ikb.site_ref = item.Field<string>("Site Ref");
-                        ikb.srut = item.Field<string>("SRUT");
-                        ikb.sut = item.Field<string>("SUT");
                         ikb.tahun = item.Field<int>("Tahun");
                         ikb.tgl_faktur = item.Field<DateTime>("Tgl Faktur");
-                        ikb.tpt = item.Field<string>("TPT");
                         ikb.type = item.Field<string>("Type");
-                        ikb.uf_harga_revisi = item.Field<decimal>("Harga Revisi");
                         ikb.uf_revisi = item.Field<int>("Revisi");
-                        ikb.uf_claim_cashback = item.Field<int>("Claim Cashback");
-                        ikb.uf_claim_sepeda = item.Field<int>("Claim Sepeda");
-                        ikb.SubsidiClaimStatus = item.Field<string>("SubsidiClaimStatus");
-                        ikb.provinsi = item.Field<string>("Provinsi");
-                        ikb.kabupaten = item.Field<string>("Kabupaten");
-                        ikb.kecamatan = item.Field<string>("Kecamatan");
-                        ikb.desa = item.Field<string>("Desa");
                         FKData.Add(ikb);
                     }
 
@@ -528,7 +518,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
 
                 List<provinsi> listProp = new WilayahServices<provinsi>().GetWilayah("provinsi");
 
-                listProp = listProp.Where(x => (x.description ?? "").ToLower().Equals(model.provinsi.ToLower())).ToList();
+                listProp = listProp.Where(x => (x.description ?? "").ToLower().Equals((model.provinsi ?? "").ToLower())).ToList();
                 if (listProp.Count() == 0)
                 {
                     fkValid = false;
@@ -539,7 +529,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                     idPr = listProp[0].id;
                     List<kabupaten> listKab = new WilayahServices<kabupaten>().GetWilayah("kabupaten/getByProvinsi", idPr);
 
-                    listKab = listKab.Where(x => (x.description ?? "").ToLower().Equals(model.kabupaten.ToLower())).ToList();
+                    listKab = listKab.Where(x => (x.description ?? "").ToLower().Equals((model.kabupaten ?? "").ToLower())).ToList();
                     if (listKab.Count() == 0)
                     {
                         fkValid = false;
@@ -550,7 +540,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                         idKab = listKab[0].id;
                         List<kecamatan> listKec = new WilayahServices<kecamatan>().GetWilayah("kecamatan/getByKabupaten", idKab);
 
-                        listKec = listKec.Where(x => (x.description ?? "").ToLower().Equals(model.kecamatan.ToLower())).ToList();
+                        listKec = listKec.Where(x => (x.description ?? "").ToLower().Equals((model.kecamatan ?? "").ToLower())).ToList();
                         if (listKec.Count() == 0)
                         {
                             fkValid = false;
@@ -561,7 +551,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                             idKec = listKec[0].id;
                             List<desa> listDes = new WilayahServices<desa>().GetWilayah("desa/getByKecamatan", idKec);
 
-                            listDes = listDes.Where(x => (x.description ?? "").ToLower().Equals(model.desa.ToLower())).ToList();
+                            listDes = listDes.Where(x => (x.description ?? "").ToLower().Equals((model.desa ?? "").ToLower())).ToList();
                             if (listDes.Count() == 0)
                             {
                                 fkValid = false;
