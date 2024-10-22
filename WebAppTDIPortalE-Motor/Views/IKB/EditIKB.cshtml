@@ -228,21 +228,21 @@
                                 @Html.TextBoxFor(m => m.no_ktp, new { @Value = Model.no_ktp, @placeholder = "No KTP", @class = "form-control form-control-user", @style = "padding: 0.2rem 1rem;" })
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3" style="display: none;">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox small">
                                     Subsidi Claim Status : @Html.CheckBoxFor(m => m.ClaimStatus, new { @Value = Model.ClaimStatus })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" style="display: none;">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox small">
                                     Claim Cashback : @Html.CheckBoxFor(m => m.uf_claim_cashbacks, new { @Value = Model.uf_claim_cashbacks })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2" style="display: none;">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox small">
                                     Claim Sepeda : @Html.CheckBoxFor(m => m.uf_claim_sepedas, new { @Value = Model.uf_claim_sepedas })
