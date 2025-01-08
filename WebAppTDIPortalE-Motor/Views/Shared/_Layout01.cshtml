@@ -22,6 +22,35 @@
     <link href="~/Theme/vendor/jquery/jquery-ui.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/3.1.1/css/buttons.dataTables.css" rel="stylesheet" />
+    @if (ViewBag.DisablePrintScreen != null && (bool)ViewBag.DisablePrintScreen)
+    {
+        <script type="text/javascript">
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'PrintScreen') {
+                    event.preventDefault();
+                    alert("This page is not permitted for print screen/screenshoot.");
+                }
+                if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+                    event.preventDefault();
+                    alert("This page is not permitted to be printed.");
+                }
+                if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+                    event.preventDefault();
+                    alert("This page is not permitted to be saved.");
+                }
+            });
+            
+            document.addEventListener('contextmenu', function (event) {
+                event.preventDefault(); // Mencegah klik kanan
+            });
+            window.onbeforeprint = function () {
+                alert("This page is not permitted to be printed.");
+                return false;
+            };
+        </script>
+        <link href="~/Content/print.css" rel="stylesheet" type="text/css">
+    }
+
 </head>
 <body id="page-top">
 

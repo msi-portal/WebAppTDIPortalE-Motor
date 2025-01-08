@@ -358,6 +358,24 @@ namespace WebAppTDIPortalE_Motor.Models
         public string description { get; set; }
     }
 
+    public class PriceList
+    {
+        public PriceList()
+        {
+
+        }
+
+        public string Model { get; set; }
+        public string Description { get; set; }
+        public string Prov { get; set; }
+        public string Kabupaten { get; set; }
+        public decimal Harga_OFTR { get; set; }
+        public decimal Harga_OFTR_LKPP { get; set; }
+        public decimal Harga_GSO { get; set; }
+        public decimal Harga_ONTR { get; set; }
+
+    }
+
     //public class FKModel
     //{
     //    public FKModel()

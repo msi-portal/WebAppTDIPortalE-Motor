@@ -1,8 +1,10 @@
 ﻿@using WebAppTDIPortalE_Motor.Models
 
 @{
-    ViewBag.Title = "Home Page";
-    List<CustAllocModel> custAllocData = (List<CustAllocModel>)ViewBag.custAllocData;
+                /**/
+
+                ViewBag.Title = "Home Page";
+                List<CustAllocModel> custAllocData = (List<CustAllocModel>)ViewBag.custAllocData;
 }
 
 @*<div class="jumbotron">
@@ -267,7 +269,58 @@
 
         </div>
     </div>
+
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">E-Motor Price List</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.PriceLists != null)
+                {
+                    foreach (PriceList priceList in ViewBag.PriceLists as List<PriceList>)
+                    {
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <a href="#" class="btn-viewpl" title="@priceList.Description" data-id="@priceList.Model">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    @priceList.Description
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@priceList.Model</div>
+                                            </a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No price lists available.</p>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="priceListModal" tabindex="-1" aria-labelledby="priceListModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+
+        </div>
+    </div>
 }
+
 
 
 @section Scripts {
@@ -362,7 +415,7 @@
                 "destroy": true,
 
             });
-        
+
         }
 
         function GetAllocEMO(period) {
@@ -530,7 +583,15 @@
         }
 
     $(document).ready(function () {
+        $('.btn-viewpl').on('click', function () {
+            const id = $(this).data('id');
 
+            // Set data to Form Edit
+            $('.id').val(id);
+
+            // Call Modal Edit
+            alert(id);
+        });
         // Bar Chart Example
 
         var ctx = document.getElementById("myBarChart");

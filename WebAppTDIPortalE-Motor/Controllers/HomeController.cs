@@ -94,7 +94,60 @@ namespace WebAppTDIPortalE_Motor.Controllers
             List<period> periodWarnList = new DAO<period>().RetrieveDataBySQL(strsql);
             ViewBag.periodWarnList = periodWarnList;
 
+            strsql = "select distinct " +
+                " prcdet.Model" +
+                "	, prc.Description" +
+                "   from tdi_prcdlr_detail_mst prcdet" +
+                "   inner join tdi_pricedealer_mst prc on prc.Model = prcdet.Model" +
+                "    where getdate() between prcdet.Start_Date and prcdet.End_Date";
+
+            List<PriceList> PriceLists = new DAO<PriceList>().RetrieveDataBySQL(strsql);
+            ViewBag.PriceLists = PriceLists;
+            ViewBag.DisablePrintScreen = true;
+
             return View();
+        }
+
+        public ActionResult GetPriceList(JqueryDatatableParam param, string model)
+        {
+            String strsql = "select " +
+                "prcdet.Model" +
+                "	, prc.Description" +
+                "	, prcdet.Prov" +
+                "	, prcdet.Kabupaten" +
+                "	, prcdet.Harga_OFTR" +
+                "	, prcdet.Harga_OFTR_LKPP" +
+                "	, prcdet.Harga_GSO" +
+                "	, prcdet.Harga_ONTR" +
+                "   from tdi_prcdlr_detail_mst prcdet" +
+                "   inner join tdi_pricedealer_mst prc on prc.Model = prcdet.Model" +
+                "    where getdate() between prcdet.Start_Date and prcdet.End_Date" +
+                "       and prcdet.Model='" + model + "'";
+
+            List<PriceList> PriceLists = new DAO<PriceList>().RetrieveDataBySQL(strsql);
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                PriceLists = PriceLists.Where(x => x.Model.ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Description ?? "").ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Harga_GSO).ToString().ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Harga_OFTR).ToString().ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Harga_OFTR_LKPP).ToString().ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Harga_ONTR).ToString().ToLower().Contains(param.sSearch.ToLower())
+                                              ).ToList();
+            }
+
+            var displayResult = PriceLists.Skip(param.iDisplayStart)
+            .Take(param.iDisplayLength).ToList();
+            var totalRecords = PriceLists.Count();
+
+            return Json(new
+            {
+                param.sEcho,
+                iTotalRecords = totalRecords,
+                iTotalDisplayRecords = totalRecords,
+                aaData = displayResult
+            }, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult GetCreditLimit()
