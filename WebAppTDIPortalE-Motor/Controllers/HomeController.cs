@@ -127,8 +127,8 @@ namespace WebAppTDIPortalE_Motor.Controllers
             List<PriceList> PriceLists = new DAO<PriceList>().RetrieveDataBySQL(strsql);
             if (!string.IsNullOrEmpty(param.sSearch))
             {
-                PriceLists = PriceLists.Where(x => x.Model.ToLower().Contains(param.sSearch.ToLower())
-                                                || (x.Description ?? "").ToLower().Contains(param.sSearch.ToLower())
+                PriceLists = PriceLists.Where(x => x.Prov.ToLower().Contains(param.sSearch.ToLower())
+                                                || (x.Kabupaten ?? "").ToLower().Contains(param.sSearch.ToLower())
                                                 || (x.Harga_GSO).ToString().ToLower().Contains(param.sSearch.ToLower())
                                                 || (x.Harga_OFTR).ToString().ToLower().Contains(param.sSearch.ToLower())
                                                 || (x.Harga_OFTR_LKPP).ToString().ToLower().Contains(param.sSearch.ToLower())
