@@ -303,7 +303,7 @@ namespace WebAppTDIPortalE_Motor.Controllers
                 srut nsrut = new srut() { ID = "", name = "" };
                 model.SrutList.Insert(0, nsrut);
 
-                model.ProvinsiList = new WilayahServices<provinsi>().GetWilayah("provinsi");
+                model.ProvinsiList = new WilayahServices<provinsi>().GetWilayahId("provinsi");
                 provinsi nprovinsi = new provinsi() { id = "", description = "" };
                 model.ProvinsiList.Insert(0, nprovinsi);
                 model.KabupatenList = new WilayahServices<kabupaten>().GetWilayah("kabupaten/getByProvinsi", Convert.ToString(ikbData[0].provinsiId));

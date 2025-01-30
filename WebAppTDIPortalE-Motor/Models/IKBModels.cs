@@ -376,6 +376,16 @@ namespace WebAppTDIPortalE_Motor.Models
 
     }
 
+    public class ApiErrorResponse
+    {
+        public int StatusCode { get; set; }
+        public string ReasonPhrase { get; set; }
+        public string Content { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
+        public string id { get; set; }
+        public string description { get; set; }
+    }
+
     //public class FKModel
     //{
     //    public FKModel()

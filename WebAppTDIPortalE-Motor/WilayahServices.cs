@@ -20,6 +20,7 @@ namespace WebAppTDIPortalE_Motor
         }
 
         string Baseurl = ConfigurationManager.AppSettings["API_URL"].ToString();
+        string ApiKey = ConfigurationManager.AppSettings["API_KEY"].ToString();
 
         public List<T> GetWilayah(string wilayah, string id = null)
         {
@@ -29,6 +30,7 @@ namespace WebAppTDIPortalE_Motor
                 //Passing service base url
                 client.BaseAddress = new Uri(Baseurl);
                 client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + ApiKey);
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //Sending request to find web api REST service resource GetAllEmployees using HttpClient
@@ -36,10 +38,26 @@ namespace WebAppTDIPortalE_Motor
                 //Checking the response is successful or not which is sent using HttpClient
                 if (Res.IsSuccessStatusCode)
                 {
-                    //Storing the response details recieved from web api
+                    // Parsing success response
                     var sResponse = Res.Content.ReadAsStringAsync().Result;
-                    //Deserializing the response recieved from web api and storing into the Employee list
                     sInfo = JsonConvert.DeserializeObject<List<T>>(sResponse);
+                }
+                else
+                {
+                    // Handling error response and returning ApiErrorResponse in List<T>
+                    ApiErrorResponse errorResponse = new ApiErrorResponse
+                    {
+                        StatusCode = (int)Res.StatusCode,
+                        ReasonPhrase = Res.ReasonPhrase,
+                        Content = Res.Content.ReadAsStringAsync().Result,
+                        Headers = Res.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+                        id = ((int)Res.StatusCode).ToString(),
+                        description = Res.ReasonPhrase
+                    };
+
+                    // To return the error response as a part of the List<T>, we need to convert it to T type
+                    // This can be done by serializing the errorResponse and deserializing it to T type
+                    sInfo.Add(JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(errorResponse)));
                 }
                 //returning the employee list to view
                 return sInfo;
@@ -54,6 +72,7 @@ namespace WebAppTDIPortalE_Motor
                 //Passing service base url
                 client.BaseAddress = new Uri(Baseurl);
                 client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + ApiKey);
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //Sending request to find web api REST service resource GetAllEmployees using HttpClient
@@ -61,10 +80,26 @@ namespace WebAppTDIPortalE_Motor
                 //Checking the response is successful or not which is sent using HttpClient
                 if (Res.IsSuccessStatusCode)
                 {
-                    //Storing the response details recieved from web api
+                    // Parsing success response
                     var sResponse = Res.Content.ReadAsStringAsync().Result;
-                    //Deserializing the response recieved from web api and storing into the Employee list
                     sInfo = JsonConvert.DeserializeObject<List<T>>(sResponse);
+                }
+                else
+                {
+                    // Handling error response and returning ApiErrorResponse in List<T>
+                    ApiErrorResponse errorResponse = new ApiErrorResponse
+                    {
+                        StatusCode = (int)Res.StatusCode,
+                        ReasonPhrase = Res.ReasonPhrase,
+                        Content = Res.Content.ReadAsStringAsync().Result,
+                        Headers = Res.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+                        id = ((int)Res.StatusCode).ToString(),
+                        description = Res.ReasonPhrase
+                    };
+
+                    // To return the error response as a part of the List<T>, we need to convert it to T type
+                    // This can be done by serializing the errorResponse and deserializing it to T type
+                    sInfo.Add(JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(errorResponse)));
                 }
                 //returning the employee list to view
                 return sInfo;
